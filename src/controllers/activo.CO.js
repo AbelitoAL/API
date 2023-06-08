@@ -78,3 +78,13 @@ export const deleteActivo = async (req,res) =>{
         res.send("ERROR")
     }
 }
+export const createReserva = async(req, res)=>{
+    try {
+        const { id, idActivoFijo, ciPersona, fecha, descripcion } = req.body
+        console.log(req.body)
+        await consul.query('INSERT INTO reserva (id, idActivoFijo, ciPersona, fecha, descripcion) VALUES ($1,$2,$3,$4,$5)', [id, idActivoFijo, ciPersona, fecha, descripcion])
+        res.send('activo reservado')
+    } catch (error) {
+        res.send("ERROR")
+    }
+}
