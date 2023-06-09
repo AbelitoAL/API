@@ -16,7 +16,8 @@ import {
     getEmpleados,
     Inicio,
     cerrar,
-    Bit
+    Bit,
+    ERROR
 } from "../controllers/persona.CO.js"
 
 const rutas = Router();
@@ -34,6 +35,8 @@ rutas.get('/api/usuar/:usuario', getusuariobyID)
 rutas.post('/api/user', createCliente)
 
 rutas.post('/api/I', Inicio)
+
+rutas.post('/api/error', ERROR)
 
 rutas.post('/api/C', cerrar)
 
