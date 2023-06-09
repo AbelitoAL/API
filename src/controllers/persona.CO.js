@@ -11,7 +11,7 @@ export const getClientes = async (req, res) => {
 
 export const Bit = async (req, res) => {
     try {
-        const resp = await consul.query('SELECT * FROM bitacora')
+        const resp = await consul.query("SELECT TO_CHAR(fecha, 'DD-MM-YYYY HH24:MI:SS') AS fecha ,accion,persona.nombre as culpable FROM bitacora,persona where culpable = ci")
         res.status(200).json(resp.rows)
     } catch (error) {
         res.send("ERROR")
