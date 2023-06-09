@@ -9,6 +9,15 @@ export const getClientes = async (req, res) => {
     }
 }
 
+export const Bit = async (req, res) => {
+    try {
+        const resp = await consul.query('SELECT * FROM bitacora')
+        res.status(200).json(resp.rows)
+    } catch (error) {
+        res.send("ERROR")
+    }
+}
+
 export const Inicio = async (req, res) => {
     try {
         const { culpable } = req.body

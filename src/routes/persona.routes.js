@@ -15,12 +15,15 @@ import {
     Memp,
     getEmpleados,
     Inicio,
-    cerrar
+    cerrar,
+    Bit
 } from "../controllers/persona.CO.js"
 
 const rutas = Router();
 
 rutas.get('/api/user', getClientes)
+
+rutas.get('/api/bitac', Bit)
 
 rutas.get('/api/user/:ci', getClientebyID)
 
