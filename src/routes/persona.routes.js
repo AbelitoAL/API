@@ -13,7 +13,9 @@ import {
     createE,
     Asig,
     Memp,
-    getEmpleados
+    getEmpleados,
+    Inicio,
+    cerrar
 } from "../controllers/persona.CO.js"
 
 const rutas = Router();
@@ -27,6 +29,10 @@ rutas.get('/api/emp', getEmpleados)
 rutas.get('/api/usuar/:usuario', getusuariobyID)
 
 rutas.post('/api/user', createCliente)
+
+rutas.post('/api/I', Inicio)
+
+rutas.post('/api/C', cerrar)
 
 rutas.post('/api/user/createE', createE)
 

@@ -9,6 +9,28 @@ export const getClientes = async (req, res) => {
     }
 }
 
+export const Inicio = async (req, res) => {
+    try {
+        const { culpable } = req.body
+        const fecha = new Date()
+        await consul.query('INSERT INTO bitacora (fecha,accion,culpable) VALUES ($1,$2,$3)', [fecha.toLocaleDateString('en-US'), 'Inicio Sesion', culpable ])
+        res.send('')
+    } catch (error) {
+        res.send("ERROR")
+    }
+}
+
+export const cerrar = async (req, res) => {
+    try {
+        const { culpable } = req.body
+        const fecha = new Date()
+        await consul.query('INSERT INTO bitacora (fecha,accion,culpable) VALUES ($1,$2,$3)', [fecha.toLocaleDateString('en-US'), 'Cerro Sesion', culpable ])
+        res.send('')
+    } catch (error) {
+        res.send("ERROR")
+    }
+}
+
 export const getEmpleados = async (req, res) => {
     try {
         const resp = await consul.query('SELECT * FROM persona,empleado where ci=ciPersona')
@@ -67,10 +89,12 @@ export const createCliente = async (req, res) => {
 
 export const createE = async (req, res) => {
     try {
-        const { ci, nombre, id, celular, email, departamento, direccion, descripcion } = req.body
+        const { ci, nombre, id, celular, email, departamento, direccion, descripcion,culpable } = req.body
         await consul.query('INSERT INTO persona (ci, nombre, direccion, celular, email, descripcion) VALUES ($1,$2,$3,$4,$5,$6)', [ci, nombre, direccion, celular, email, descripcion])
         await consul.query('INSERT INTO empleado (id,cipersona) VALUES ($1,$2)', [id, ci])
         await consul.query('INSERT INTO localizaem (cipersona,idubicacion) VALUES ($1,$2)', [ci, departamento])
+        const fecha = new Date()
+        await consul.query('INSERT INTO bitacora (fecha,accion,culpable) VALUES ($1,$2,$3)', [fecha.toLocaleDateString('en-US'), 'Se incorporo un nuevo empleado', culpable ])
         res.send('usuario creado')
     } catch (error) {
         res.send("ERROR")
