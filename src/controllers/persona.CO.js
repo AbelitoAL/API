@@ -37,7 +37,8 @@ export const ERROR = async (req, res) => {
         if(resp.rowCount > 0){
             var intento = resp.rows[0].intentos
             intento = intento + 1
-            const user = resp.rows[0].usuario
+            var user = resp.rows[0].usuario
+            console.log(user)
             await consul.query('UPDATE administrador SET intentos = $1 WHERE usuario = $2 AND ciPersona = $3', [intento, user, UsuI ])
         }
         res.send('')
