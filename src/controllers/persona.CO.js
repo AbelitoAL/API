@@ -31,13 +31,14 @@ export const Inicio = async (req, res) => {
 
 export const ERROR = async (req, res) => {
     try {
-        
+
         const { UsuI } = req.body
         const resp = await consul.query('SELECT * FROM administrador where usuario = $1',[UsuI])
         if(resp.rowCount > 0){
             var intento = resp.rows[0].intentos
             intento = intento + 1
-            await consul.query("UPDATE administrador SET intentos = $1 WHERE usuario = '$2' AND ciPersona = $3", [intento, resp.rows[0].usuario, UsuI ])
+            const user = resp.rows[0].usuario
+            await consul.query("UPDATE administrador SET intentos = $1 WHERE usuario = $2 AND ciPersona = $3", [intento, user, UsuI ])
         }
         res.send('')
     } catch (error) {
