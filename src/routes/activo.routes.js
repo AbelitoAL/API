@@ -1,10 +1,12 @@
 import { Router } from "express";
 
-import {createActivo,createReserva,deleteActivo,getActivobyID,getActivobySerial,getActivos,getGarActivo,getUbiActivo, updateActivo }from "../controllers/activo.CO.js"
+import {createActivo,createReserva,deleteActivo,getActivobyID,getActivobySerial,getActivos,getActivosF,getGarActivo,getUbiActivo, updateActivo }from "../controllers/activo.CO.js"
 
 const activo = Router();
 
 activo.get('/api/acti', getActivos)
+
+activo.get('/api/acti/:Inicio/:Fin', getActivosF)
 
 activo.get('/api/acti/:id', getActivobyID)
 

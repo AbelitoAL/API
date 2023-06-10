@@ -9,6 +9,17 @@ export const getActivos = async (req, res) => {
     }
 }
 
+export const getActivosF = async (req, res) => {
+    try {
+        const Inicio = req.params.Inicio
+        const Fin = req.params.Fin
+        const resp = await consul.query('SELECT * FROM activoFijo where diacompra BETWEEN $1 AND $2',[Inicio,Fin])
+        res.status(200).json(resp.rows)
+    } catch (error) {
+        res.send("ERROR")
+    }
+}
+
 export const getUbiActivo = async (req, res) => {
     try {
         const resp = await consul.query('SELECT * FROM activoFijo,ubicacion,localiza WHERE idActivo=activoFijo.id and idUbicacion=ubicacion.id')
