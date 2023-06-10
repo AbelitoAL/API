@@ -176,9 +176,9 @@ export const Musuario = async (req, res) => {
         const { ci, nombre, direccion, ciudad, celular, email, descripcion, empresa } = req.body
         consul.query('INSERT INTO persona (ci, nombre, direccion, ciudad, celular, email, descripcion) VALUES ($1,$2,$3,$4,$5,$6,$7)', [ci, nombre, direccion, ciudad, celular, email, descripcion])
 
-        res.send('usuario creado')
-
+        
         consul.query('INSERT INTO empleado (cipersona) VALUES ($1)', [ci])
+        res.send('usuario creado')
     } catch (error) {
         res.send("ERROR")
     }
@@ -198,6 +198,7 @@ export const MUser = async (req, res) => {
         const { nombre, usuario, direccion, ciudad, celular, email } = req.body
         await consul.query("UPDATE persona SET nombre = $1,direccion = $2,ciudad = $3,celular = $4,email = $5 WHERE ci = $6", [nombre, direccion, ciudad, celular, email, req.params.ci])
         await consul.query('UPDATE administrador SET usuario = $1 WHERE cipersona = $2 )', [usuario, req.params.ci])
+        res.send('usuario creado')
     } catch (error) {
         res.send("ERROR")
     }
@@ -208,6 +209,7 @@ export const Mcontra = async (req, res) => {
         const usuario = req.params.usuario
         const { Npass } = req.body
         await consul.query("UPDATE administrador SET contrasena = $1 WHERE usuario = $2 AND ciPersona = $3", [Npass,usuario,ci])
+        res.send('usuario creado')
     } catch (error) {
         res.send("ERROR")
     }
@@ -217,7 +219,7 @@ export const Memp = async (req, res) => {
     try {
         const { ci, nombre, direccion, ciudad, celular, email, descripcion, empresa } = req.body
         await consul.query("UPDATE persona SET ci = $1, nombre = $2, direccion = $3, ciudad = $4, celular = $5, email = $6, descripcion = $7 WHERE ci = $8", [ci, nombre, direccion, ciudad, celular, email, descripcion, req.params.ci])
-        
+        res.send('usuario creado')
     } catch (error) {
         res.send("ERROR")
     }
