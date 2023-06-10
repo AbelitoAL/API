@@ -17,7 +17,8 @@ import {
     Inicio,
     cerrar,
     Bit,
-    ERROR
+    ERROR,
+    BitF
 } from "../controllers/persona.CO.js"
 
 const rutas = Router();
@@ -25,6 +26,8 @@ const rutas = Router();
 rutas.get('/api/user', getClientes)
 
 rutas.get('/api/bitac', Bit)
+
+rutas.get('/api/bitac/:Inicio/:fin', BitF)
 
 rutas.get('/api/user/:ci', getClientebyID)
 

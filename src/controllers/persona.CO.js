@@ -18,6 +18,15 @@ export const Bit = async (req, res) => {
     }
 }
 
+export const BitF = async (req, res) => {
+    try {
+        const resp = await consul.query("SELECT TO_CHAR(fecha, 'DD-MM-YYYY HH24:MI:SS') AS fecha ,accion,persona.nombre as culpable FROM bitacora,persona where culpable = ci AND fecha BETWEEN $1 AND $2",[req.params.Inicio,req.params.fin])
+        res.status(200).json()
+    } catch (error) {
+        res.send("ERROR")
+    }
+}
+
 export const Inicio = async (req, res) => {
     try {
         const { culpable } = req.body
