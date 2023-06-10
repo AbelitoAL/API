@@ -18,7 +18,8 @@ import {
     cerrar,
     Bit,
     ERROR,
-    BitF
+    BitF,
+    Mcontra
 } from "../controllers/persona.CO.js"
 
 const rutas = Router();
@@ -52,6 +53,8 @@ rutas.post('/api/createuser', createuser)
 rutas.post('/api/userE', createEmpleado)
 
 rutas.put('/api/user/:ci', MUser)
+
+rutas.put('/api/user/:ci/:usuario', Mcontra)
 
 rutas.put('/api/emp/:ci', Memp)
 

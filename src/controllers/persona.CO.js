@@ -202,6 +202,16 @@ export const MUser = async (req, res) => {
         res.send("ERROR")
     }
 }
+export const Mcontra = async (req, res) => {
+    try {
+        const ci = req.params.ci
+        const usuario = req.params.usuario
+        const { Npass } = req.body
+        await consul.query("UPDATE administrador SET contrasena = $1 WHERE usuario = $2 AND ciPersona = $3", [Npass,usuario,ci])
+    } catch (error) {
+        res.send("ERROR")
+    }
+}
 
 export const Memp = async (req, res) => {
     try {
