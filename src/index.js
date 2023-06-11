@@ -5,6 +5,7 @@ import rutas from "./routes/persona.routes.js"
 import activo from './routes/activo.routes.js'
 import ubi from './routes/ubicacion.routes.js'
 import mant from './routes/mantenimiento.routes.js'
+import estado from './routes/estado.routes.js'
 const app = express()
 
 app.use(morgan('dev'));
@@ -17,4 +18,5 @@ app.use(rutas)
 app.use(activo)
 app.use(ubi)
 app.use(mant)
+app.use(estado)
 app.listen(process.env.PORT||5000)
