@@ -21,8 +21,8 @@ export const createMantenimiento = async (req, res) => {
 
 export const updateMantenimiento = async (req, res) => {
     try {
-      const { titulo, descripcion, fechaInicio, responsable,costo, estado } = req.body;
-      await consul.query('UPDATE mantenimiento SET titulo=$1, descripcion=$2, fechaInicio=$3, responsable=$4, costo=$5, estado=$6 WHERE id = $7', [titulo, descripcion, fechaInicio, responsable,costo,estado, req.params.id]);
+      const { idaf,titulo, descripcion, fechaInicio, responsable,costo, idestado } = req.body;
+      await consul.query('UPDATE mantenimiento SET idaf=$1, descrtituloipcion=$2, descripcion=$3, fechaInicio=$4, responsable=$5, costo=$6, idestado=$7 WHERE id = $8', [idaf,titulo, descripcion, fechaInicio, responsable,costo, idestado, req.params.id]);
       res.send(`mantenimiento ${req.params.id} actualizado`);
     } catch (error) {
       res.send("ERROR UPDATE MANTENIMIENTO");
