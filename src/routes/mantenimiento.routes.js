@@ -5,6 +5,7 @@ import { createMantenimiento,getMantenimientos, deleteMantenimiento, updateMante
 const mantenimiento = Router();
 
 mantenimiento.get('/api/mant', getMantenimientos)
+
 mantenimiento.post('/api/mant', createMantenimiento)
 
 mantenimiento.put('/api/mant/:id', updateMantenimiento)
