@@ -1,6 +1,6 @@
 import { Router } from "express";
 
-import {createActivo,createReserva,deleteActivo,getActivobyID,getActivobySerial,getActivos,getActivosF,getGarActivo,getUbiActivo, updateActivo }from "../controllers/activo.CO.js"
+import {createActivo,createReserva,deleteActivo,getActivobyID,getActivobySerial,getActivos,getActivosF,getGarActivo,getReservas,getUbiActivo, updateActivo ,getReservas}from "../controllers/activo.CO.js"
 
 const activo = Router();
 
@@ -23,5 +23,7 @@ activo.put('/api/acti/:id', updateActivo)
 activo.delete('/api/acti/:id', deleteActivo)
 
 activo.post('/api/acti/res', createReserva)
+
+activo.get('/api/acti/res', getReservas)
 
 export default activo;
