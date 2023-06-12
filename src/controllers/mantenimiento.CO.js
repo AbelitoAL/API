@@ -11,8 +11,8 @@ export const getMantenimientos = async (req, res) => {
 
 export const createMantenimiento = async (req, res) => {
     try {
-        const { id,titulo, descripcion, fechaInicio, responsable,costo, estado} = req.body
-        consul.query('INSERT INTO mantenimiento (id,titulo, descripcion, fechaInicio, responsable,costo, estado) VALUES ($1,$2,$3,$4,$5,$6,$7)', [id,titulo, descripcion, fechaInicio, responsable,costo, estado])
+        const { idaf,titulo, descripcion, fechaInicio, responsable,costo, idestado} = req.body
+        consul.query('INSERT INTO mantenimiento (idaf,titulo, descripcion, fechaInicio, responsable,costo, idestado) VALUES ($1,$2,$3,$4,$5,$6,$7)', [idaf,titulo, descripcion, fechaInicio, responsable,costo, idestado])
         res.send('mantenimiento creado')
     } catch (error) {
         res.send("ERROR CREATE MANTENIMIENTO")
