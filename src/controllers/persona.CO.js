@@ -140,9 +140,10 @@ export const createE = async (req, res) => {
 
 export const Asig = async (req, res) => {
     try {
-        const { idActivo, cipersona, fecha } = req.body
-        console.log(req.body)
+        const { idActivo, cipersona, fecha,culpable } = req.body
         await consul.query('INSERT INTO asignado (idactivofijo,cipersona,fechasalida) VALUES ($1,$2,$3)', [idActivo, cipersona, fecha])
+        const fechaD = new Date()
+        await consul.query('INSERT INTO bitacora (fecha,accion,culpable) VALUES ($1,$2,$3)', [fechaD.toLocaleDateString('en-US'), 'Se incorporo un nuevo empleado', culpable ])
         res.send('activo asignado')
     } catch (error) {
         res.send("ERROR")
@@ -162,9 +163,11 @@ export const createuser = async (req, res) => {
 
 export const createEmpleado = async (req, res) => {
     try {
-        const { ci, nombre, direccion, ciudad, celular, email, descripcion} = req.body
+        const { ci, nombre, direccion, ciudad, celular, email, descripcion,culpable} = req.body
         consul.query('INSERT INTO persona (ci, nombre, direccion, ciudad, celular, email, descripcion) VALUES ($1,$2,$3,$4,$5,$6,$7)', [ci, nombre, direccion, ciudad, celular, email, descripcion])
         consul.query('INSERT INTO empleado (cipersona) VALUES ($1)', [ci])
+        const fecha = new Date()
+        await consul.query('INSERT INTO bitacora (fecha,accion,culpable) VALUES ($1,$2,$3)', [fecha.toLocaleDateString('en-US'), 'Se incorporo un nuevo empleado', culpable ])
         res.send('usuario creado')
     } catch (error) {
         res.send("ERROR")
@@ -186,7 +189,10 @@ export const Musuario = async (req, res) => {
 
 export const deleteUser = async (req, res) => {
     try {
+        const {culpable} = req.body
         const resp = await consul.query('DELETE FROM persona WHERE ci = $1', [req.params.ci])
+        const fecha = new Date()
+        await consul.query('INSERT INTO bitacora (fecha,accion,culpable) VALUES ($1,$2,$3)', [fecha.toLocaleDateString('en-US'), 'Se incorporo un nuevo empleado', culpable ])
         res.send(`Usuario ${req.params.ci} Eliminado`)
     } catch (error) {
         res.send("ERROR")
@@ -217,8 +223,10 @@ export const Mcontra = async (req, res) => {
 
 export const Memp = async (req, res) => {
     try {
-        const { ci, nombre, direccion, ciudad, celular, email, descripcion, empresa } = req.body
+        const { ci, nombre, direccion, ciudad, celular, email, descripcion, empresa , culpable} = req.body
         await consul.query("UPDATE persona SET ci = $1, nombre = $2, direccion = $3, ciudad = $4, celular = $5, email = $6, descripcion = $7 WHERE ci = $8", [ci, nombre, direccion, ciudad, celular, email, descripcion, req.params.ci])
+        const fecha = new Date()
+        await consul.query('INSERT INTO bitacora (fecha,accion,culpable) VALUES ($1,$2,$3)', [fecha.toLocaleDateString('en-US'), 'Se incorporo un nuevo empleado', culpable ])
         res.send('usuario creado')
     } catch (error) {
         res.send("ERROR")
