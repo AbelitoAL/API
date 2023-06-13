@@ -103,6 +103,7 @@ export const createReserva = async(req, res)=>{
 export const getReservas = async (req, res) => {
     try {
         const resp = await consul.query('SELECT * FROM reserva')
+        console.log(resp);
         res.status(200).json(resp.rows)
     } catch (error) {
         res.send("ERROR GET RESERVAS")

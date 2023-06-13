@@ -24,6 +24,6 @@ activo.delete('/api/acti/:id', deleteActivo)
 
 activo.post('/api/acti/res', createReserva)
 
-activo.get('/api/acti/res', getReservas)
+activo.get('/api/res', getReservas)
 
 export default activo;
