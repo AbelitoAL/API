@@ -109,3 +109,13 @@ export const getReservas = async (req, res) => {
         res.send("ERROR GET RESERVAS")
     }
 }
+
+export const updateReserva = async (req, res) => {
+    try {
+      const { idactivofijo, cipersona, fecha, descripcion } = req.body;
+      await consul.query('UPDATE reserva SET idactivofijo=$1, cipersona=$2, fecha=$3, descripcion=$4 WHERE id = $5', [idactivofijo, cipersona, fecha, descripcion, req.params.id]);
+      res.send(`Reserva ${req.params.id} actualizado`);
+    } catch (error) {
+      res.send("ERROR");
+    }
+  };
