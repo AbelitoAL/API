@@ -91,11 +91,31 @@ export const deleteActivo = async (req,res) =>{
 }
 export const createReserva = async(req, res)=>{
     try {
-        const { id, idActivoFijo, ciPersona, fecha, descripcion } = req.body
+        const { idActivoFijo, ciPersona, fecha, descripcion } = req.body
         console.log(req.body)
-        await consul.query('INSERT INTO reserva (id, idActivoFijo, ciPersona, fecha, descripcion) VALUES ($1,$2,$3,$4,$5)', [id, idActivoFijo, ciPersona, fecha, descripcion])
+        await consul.query('INSERT INTO reserva (idActivoFijo, ciPersona, fecha, descripcion) VALUES ($1,$2,$3,$4)', [idActivoFijo, ciPersona, fecha, descripcion])
         res.send('activo reservado')
     } catch (error) {
         res.send("ERROR")
     }
 }
+
+export const getReservas = async (req, res) => {
+    try {
+        const resp = await consul.query('SELECT * FROM reserva')
+        console.log(resp);
+        res.status(200).json(resp.rows)
+    } catch (error) {
+        res.send("ERROR GET RESERVAS")
+    }
+}
+
+export const updateReserva = async (req, res) => {
+    try {
+      const { idactivofijo, cipersona, fecha, descripcion } = req.body;
+      await consul.query('UPDATE reserva SET idactivofijo=$1, cipersona=$2, fecha=$3, descripcion=$4 WHERE id = $5', [idactivofijo, cipersona, fecha, descripcion, req.params.id]);
+      res.send(`Reserva ${req.params.id} actualizado`);
+    } catch (error) {
+      res.send("ERROR");
+    }
+  };

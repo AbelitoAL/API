@@ -1,6 +1,6 @@
 import { Router } from "express";
 
-import {getUbicaciones, createUbicacion,deleteUbicacion,getUbicacionByID,updateUbicacion }from "../controllers/Ubicaion.CO.js"
+import {getUbicaciones, createUbicacion,deleteUbicacion,getUbicacionByID,updateUbicacion }from "../controllers/ubicacion.CO.js"
 
 const ubi = Router();
 
