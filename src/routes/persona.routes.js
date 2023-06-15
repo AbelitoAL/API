@@ -19,7 +19,8 @@ import {
     Bit,
     ERROR,
     BitF,
-    Mcontra
+    Mcontra,
+    AñadorBit
 } from "../controllers/persona.CO.js"
 
 const rutas = Router();
@@ -59,5 +60,7 @@ rutas.put('/api/user/:ci/:usuario', Mcontra)
 rutas.put('/api/emp/:ci', Memp)
 
 rutas.delete('/api/user/:ci', deleteUser)
+
+rutas.post('/AñadirBita',AñadorBit)
 
 export default rutas;

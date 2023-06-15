@@ -232,3 +232,14 @@ export const Memp = async (req, res) => {
         res.send("ERROR")
     }
 }
+
+export const AñadorBit = async (req, res) => {
+    try {
+        const { mensaje, culpable} = req.body
+        const fecha = new Date()
+        await consul.query('INSERT INTO bitacora (fecha,accion,culpable) VALUES ($1,$2,$3)', [fecha.toLocaleDateString('en-US'), mensaje, culpable ])
+        res.send('Se añadio Exitosamente')
+    } catch (error) {
+        res.send("ERROR")
+    }
+}
