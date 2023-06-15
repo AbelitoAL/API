@@ -22,7 +22,7 @@ export const BitF = async (req, res) => {
     try {
         const Inicio = req.params.Inicio
         const Fin = req.params.Fin
-        const resp = await consul.query("SELECT fecha,accion,persona.nombre as culpable FROM bitacora,persona where culpable = ci AND fecha BETWEEN $1 AND $2",[Inicio,Fin])
+        const resp = await consul.query("SELECT id,fecha,accion,persona.nombre as culpable FROM bitacora,persona where culpable = ci AND fecha BETWEEN $1 AND $2 ORDER BY id DESC",[Inicio,Fin])
         res.status(200).json(resp.rows)
     } catch (error) {
         res.send("ERROR")
