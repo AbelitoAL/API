@@ -61,6 +61,6 @@ rutas.put('/api/emp/:ci', Memp)
 
 rutas.delete('/api/user/:ci', deleteUser)
 
-rutas.post('/AñadirBita',AñadorBit)
+rutas.post('/bita/A',AñadorBit)
 
 export default rutas;
