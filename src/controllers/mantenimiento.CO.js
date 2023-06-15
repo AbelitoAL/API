@@ -37,3 +37,14 @@ export const deleteMantenimiento = async (req,res) =>{
         res.send("ERROR DELETE MANTENIMIENTO")
     }
 }
+
+export const getMantF = async (req, res) => {
+    try {
+        const Inicio = req.params.Inicio
+        const Fin = req.params.Fin
+        const resp = await consul.query('SELECT * FROM mantenimiento where fechaInicio BETWEEN $1 AND $2',[Inicio,Fin])
+        res.status(200).json(resp.rows)
+    } catch (error) {
+        res.send("ERROR")
+    }
+}
