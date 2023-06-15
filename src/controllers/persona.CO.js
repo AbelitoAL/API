@@ -11,7 +11,7 @@ export const getClientes = async (req, res) => {
 
 export const Bit = async (req, res) => {
     try {
-        const resp = await consul.query("SELECT id,fecha,accion,persona.nombre as culpable FROM bitacora,persona where culpable = ci ORDEN BY id DESC ")
+        const resp = await consul.query("SELECT id,fecha,accion,persona.nombre as culpable FROM bitacora,persona where culpable = ci ORDER BY id DESC ")
         res.status(200).json(resp.rows)
     } catch (error) {
         res.send("ERROR")
