@@ -236,6 +236,7 @@ export const Memp = async (req, res) => {
 export const AñadorBit = async (req, res) => {
     try {
         const { mensaje, culpable} = req.body
+        console.log(req.body)
         const fecha = new Date()
         await consul.query('INSERT INTO bitacora (fecha,accion,culpable) VALUES ($1,$2,$3)', [fecha.toLocaleDateString('en-US'), mensaje, culpable ])
         res.send('Se añadio Exitosamente')
