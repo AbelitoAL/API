@@ -1,4 +1,6 @@
 import express from 'express'
+import { dirname,join } from "path";
+import {fileURLToPath} from 'url';
 import bodyParser from "body-parser"
 import morgan from "morgan"
 import rutas from "./routes/persona.routes.js"
@@ -13,6 +15,8 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}))
 app.use(express.json())
 app.use(express.urlencoded({extended: false}))
+const __dirname = dirname(fileURLToPath(import.meta.url))
+app.use(express.static(join(__dirname, 'public')))
 
 app.use(rutas)
 app.use(activo)

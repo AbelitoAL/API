@@ -1,4 +1,5 @@
 import { consul } from "../db.js"
+import helpers from "../lib/helpers.js"
 
 export const getClientes = async (req, res) => {
     try {
@@ -103,6 +104,24 @@ export const getusuariobyID = async (req, res) => {
         res.send("ERROR")
     }
 }
+export const getusuariobyIDM = async (req, res) => {
+    try {
+        const { usuario,contra } = req.body
+        const resp = await consul.query('SELECT * FROM persona,administrador where usuario = $1 and ci=ciPersona', [usuario])
+        if(resp.rowCount>0){
+            if(helpers.descriptar(contra,resp.rows[0].contrasena)){
+                res.status(200).json("1")// aceptado
+            }else{
+                res.status(200).json("0")// rechazado
+            }
+        }else{
+            res.status(200).json("-1") // No existe el usuario
+        }
+        return
+    } catch (error) {
+        res.send("ERROR")
+    }
+}
 
 export const getEmpleadobyID = async (req, res) => {
     try {
@@ -141,6 +160,18 @@ export const Asig = async (req, res) => {
         const { idActivo, cipersona, fecha } = req.body
         await consul.query('INSERT INTO asignado (idactivofijo,cipersona,fechasalida) VALUES ($1,$2,$3)', [idActivo, cipersona, fecha])
         res.send('activo asignado')
+    } catch (error) {
+        res.send("ERROR")
+    }
+}
+
+export const createuserM = async (req, res) => {
+    try {
+        const { nombre, email, ci, Usuario, contra } = req.body
+        const Npass = await helpers.encriptar(contra)
+        await consul.query('INSERT INTO persona (ci, nombre, email) VALUES ($1,$2,$3)', [ci, nombre, email])
+        await consul.query('INSERT INTO administrador (cipersona,usuario,contrasena) VALUES ($1,$2,$3)', [ci, Usuario, Npass])
+        res.send('usuario creado')
     } catch (error) {
         res.send("ERROR")
     }

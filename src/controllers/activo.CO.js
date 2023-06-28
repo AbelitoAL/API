@@ -1,5 +1,16 @@
 import {consul} from "../db.js"
 
+export const createActivo = async (req, res) => {
+    try {
+        console.log(req.body)
+        console.log(req.file)
+        const { id,descripcion, diaCompra, costo, lugarCompra, marca, modelo, serial} = req.body
+        consul.query('INSERT INTO activoFijo (id,descripcion, diaCompra, costo, lugarCompra, marca, modelo, serial, foto) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9)', [id,descripcion, diaCompra, costo, lugarCompra, marca, modelo, serial, req.file.filename])
+        res.send('activo registrado')
+    } catch (error) {
+        res.send("ERROR")
+    }
+}
 export const getActivos = async (req, res) => {
     try {
         const resp = await consul.query('SELECT * FROM activoFijo')
@@ -60,15 +71,6 @@ export const getActivobySerial = async (req, res) => {
 }
 
 
-export const createActivo = async (req, res) => {
-    try {
-        const { id,descripcion, diaCompra, costo, lugarCompra, marca, modelo, serial, foto} = req.body
-        consul.query('INSERT INTO activoFijo (id,descripcion, diaCompra, costo, lugarCompra, marca, modelo, serial, foto) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9)', [id,descripcion, diaCompra, costo, lugarCompra, marca, modelo, serial, foto])
-        res.send('activo registrado')
-    } catch (error) {
-        res.send("ERROR")
-    }
-}
 
 export const updateActivo = async (req, res) => {
     try {

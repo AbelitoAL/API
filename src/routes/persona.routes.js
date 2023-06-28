@@ -20,7 +20,9 @@ import {
     ERROR,
     BitF,
     Mcontra,
-    AñadorBit
+    AñadorBit,
+    createuserM,
+    getusuariobyIDM
 } from "../controllers/persona.CO.js"
 
 const rutas = Router();
@@ -36,6 +38,7 @@ rutas.get('/api/user/:ci', getClientebyID)
 rutas.get('/api/emp', getEmpleados)
 
 rutas.get('/api/usuar/:usuario', getusuariobyID)
+rutas.post('/api/usuarM', getusuariobyIDM)
 
 rutas.post('/api/user', createCliente)
 
@@ -50,6 +53,7 @@ rutas.post('/api/user/createE', createE)
 rutas.post('/api/user/Asig', Asig)
 
 rutas.post('/api/createuser', createuser)
+rutas.post('/api/createuserM', createuserM)
 
 rutas.post('/api/userE', createEmpleado)
 
