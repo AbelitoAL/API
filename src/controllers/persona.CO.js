@@ -109,7 +109,7 @@ export const getusuariobyIDM = async (req, res) => {
         const { usuario,contra } = req.body
         const resp = await consul.query('SELECT * FROM persona,administrador where usuario = $1 and ci=ciPersona', [usuario])
         if(resp.rowCount>0){
-            if(helpers.descriptar(contra,resp.rows[0].contrasena)){
+            if(await helpers.descriptar(contra,resp.rows[0].contrasena)){
                 res.status(200).json("1")// aceptado
             }else{
                 res.status(200).json("0")// rechazado

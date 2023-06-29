@@ -19,8 +19,9 @@ export const storage = multer.diskStorage({
     }
 })
 
-const upload = multer(storage)
+const upload = multer({storage})
 
+//activo.post('/api/acti',upload.single('img'), createActivo)
 activo.post('/api/acti',upload.single('img'), createActivo)
 
 activo.get('/api/acti', getActivos)
