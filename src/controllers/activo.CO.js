@@ -1,21 +1,11 @@
 import {consul} from "../db.js"
+import { dirname, join } from 'path';
+import { fileURLToPath } from 'url';
+import fs from 'fs';
 
-/* export const createActivo = async (req, res) => {
-    try {
-        console.log(req.body)
-        console.log(req.file)
-        const { id,descripcion, diaCompra, costo, lugarCompra, marca, modelo, serial} = req.body
-        consul.query('INSERT INTO activoFijo (id,descripcion, diaCompra, costo, lugarCompra, marca, modelo, serial, foto) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9)', [id,descripcion, diaCompra, costo, lugarCompra, marca, modelo, serial, req.file.filename])
-        res.send('activo registrado')
-    } catch (error) {
-        res.send("ERROR")
-    }
-} */
 
 export const createActivo = async (req, res) => {
     try {
-        console.log(req.body)
-        console.log(req.file)
         const { id,descripcion, diaCompra, costo, lugarCompra, marca, modelo, serial} = req.body
         consul.query('INSERT INTO activoFijo (id,descripcion, diaCompra, costo, lugarCompra, marca, modelo, serial, foto) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9)', [id,descripcion, diaCompra, costo, lugarCompra, marca, modelo, serial, req.file.filename])
         res.send('activo registrado')
@@ -27,6 +17,22 @@ export const getActivos = async (req, res) => {
     try {
         const resp = await consul.query('SELECT * FROM activoFijo')
         res.status(200).json(resp.rows)
+    } catch (error) {
+        res.send("ERROR")
+    }
+}
+
+export const getImagen = async (req, res) => {
+    try {
+        const resp = await consul.query('SELECT * FROM activoFijo where id = $1',[req.params.id]) 
+        const __dirname = dirname(fileURLToPath(import.meta.url));
+        const imagePath = join(__dirname, `../public/img/${resp.rows[0].foto}`);
+        if(await fs.existsSync(imagePath)){
+            res.sendFile(imagePath)
+        }else{
+            const imagePath = join(__dirname, `../public/img/default.jpg`);
+            res.sendFile(imagePath)
+        }
     } catch (error) {
         res.send("ERROR")
     }

@@ -43,7 +43,6 @@ export const Inicio = async (req, res) => {
 
 export const ERROR = async (req, res) => {
     try {
-
         const { UsuI } = req.body
         const resp = await consul.query('SELECT * FROM administrador where usuario = $1',[UsuI])
         if(resp.rowCount > 0){
