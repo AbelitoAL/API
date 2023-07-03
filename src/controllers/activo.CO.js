@@ -103,6 +103,8 @@ export const updateActivo = async (req, res) => {
 
 export const deleteActivo = async (req,res) =>{
     try {
+        await consul.query('DELETE FROM reserva WHERE idActivoFijo = $1', [req.params.id]);
+
         const resp = await consul.query('DELETE FROM activoFijo WHERE id = $1',[req.params.id])
         res.send(`Activo ${req.params.id} Eliminado`)
     } catch (error) {
