@@ -2,7 +2,7 @@ import { Router } from "express";
 import {dirname, join} from 'path';
 import {fileURLToPath} from 'url';
 import multer from 'multer'
-
+import { exec } from 'child_process'
 import {createActivo,createReserva,deleteActivo,getActivobyID,getActivobySerial,getActivos,getActivosF,getGarActivo,getImagen,getReservas,getUbiActivo, updateActivo, updateReserva}from "../controllers/activo.CO.js"
 
 const activo = Router();
@@ -49,7 +49,7 @@ activo.get('/pg_dump_version', (req, res) => {
     });
   });
 
-  
+
 
 activo.put('/api/acti/:id', updateActivo)
 
