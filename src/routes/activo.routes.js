@@ -24,13 +24,14 @@ const upload = multer({storage})
 activo.post('/api/acti',upload.single('img'), createActivo)
 
 activo.get('/api/acti', getActivos)
+
 activo.get('/api/actiI/:id', getImagen)
 
 activo.get('/api/acti/:Inicio/:Fin', getActivosF)
 
 activo.get('/api/acti/:id', getActivobyID)
 
-activo.get('/api/Gacti',getGarActivo)
+activo.get('/api/Gacti/:id',getGarActivo)
 
 activo.get('/api/Gactivo',getUbiActivo)
 
@@ -43,7 +44,10 @@ activo.delete('/api/acti/:id', deleteActivo)
 
 activo.post('/api/acti/res', createReserva)
 
+activo.post('/api/acti/gar', createReserva)
+
 activo.get('/api/res', getReservas)
 
 activo.put('/api/res/:id', updateReserva)
+
 export default activo;

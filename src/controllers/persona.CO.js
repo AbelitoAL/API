@@ -1,5 +1,6 @@
 import { consul } from "../db.js"
 import helpers from "../lib/helpers.js"
+import { exec } from 'child_process'
 
 export const getClientes = async (req, res) => {
     try {
@@ -23,7 +24,7 @@ export const BitF = async (req, res) => {
     try {
         const Inicio = req.params.Inicio
         const Fin = req.params.Fin
-        const resp = await consul.query("SELECT id,fecha,accion,persona.nombre as culpable FROM bitacora,persona where culpable = ci AND fecha BETWEEN $1 AND $2 ORDER BY id DESC",[Inicio,Fin])
+        const resp = await consul.query("SELECT id,fecha,accion,persona.nombre as culpable FROM bitacora,persona where culpable = ci AND fecha BETWEEN $1 AND $2 ORDER BY id DESC", [Inicio, Fin])
         res.status(200).json(resp.rows)
     } catch (error) {
         res.send("ERROR")
@@ -34,7 +35,7 @@ export const Inicio = async (req, res) => {
     try {
         const { culpable } = req.body
         const fecha = new Date()
-        await consul.query('INSERT INTO bitacora (fecha,accion,culpable) VALUES ($1,$2,$3)', [fecha.toLocaleDateString('en-US'), 'Inicio Sesion', culpable ])
+        await consul.query('INSERT INTO bitacora (fecha,accion,culpable) VALUES ($1,$2,$3)', [fecha.toLocaleDateString('en-US'), 'Inicio Sesion', culpable])
         res.send('')
     } catch (error) {
         res.send("ERROR")
@@ -44,12 +45,12 @@ export const Inicio = async (req, res) => {
 export const ERROR = async (req, res) => {
     try {
         const { UsuI } = req.body
-        const resp = await consul.query('SELECT * FROM administrador where usuario = $1',[UsuI])
-        if(resp.rowCount > 0){
+        const resp = await consul.query('SELECT * FROM administrador where usuario = $1', [UsuI])
+        if (resp.rowCount > 0) {
             var intento = resp.rows[0].intentos
             intento = intento + 1
             var ci = resp.rows[0].cipersona
-            await consul.query('UPDATE administrador SET intentos = $1 WHERE usuario = $2 AND ciPersona = $3', [intento, UsuI, ci ])
+            await consul.query('UPDATE administrador SET intentos = $1 WHERE usuario = $2 AND ciPersona = $3', [intento, UsuI, ci])
         }
         res.send('')
     } catch (error) {
@@ -61,7 +62,7 @@ export const cerrar = async (req, res) => {
     try {
         const { culpable } = req.body
         const fecha = new Date()
-        await consul.query('INSERT INTO bitacora (fecha,accion,culpable) VALUES ($1,$2,$3)', [fecha.toLocaleDateString('en-US'), 'Cerro Sesion', culpable ])
+        await consul.query('INSERT INTO bitacora (fecha,accion,culpable) VALUES ($1,$2,$3)', [fecha.toLocaleDateString('en-US'), 'Cerro Sesion', culpable])
         res.send('')
     } catch (error) {
         res.send("ERROR")
@@ -105,15 +106,15 @@ export const getusuariobyID = async (req, res) => {
 }
 export const getusuariobyIDM = async (req, res) => {
     try {
-        const { usuario,contra } = req.body
+        const { usuario, contra } = req.body
         const resp = await consul.query('SELECT * FROM persona,administrador where usuario = $1 and ci=ciPersona', [usuario])
-        if(resp.rowCount>0){
-            if(await helpers.descriptar(contra,resp.rows[0].contrasena)){
+        if (resp.rowCount > 0) {
+            if (await helpers.descriptar(contra, resp.rows[0].contrasena)) {
                 res.status(200).json("1")// aceptado
-            }else{
+            } else {
                 res.status(200).json("0")// rechazado
             }
-        }else{
+        } else {
             res.status(200).json("-1") // No existe el usuario
         }
         return
@@ -189,7 +190,7 @@ export const createuser = async (req, res) => {
 
 export const createEmpleado = async (req, res) => {
     try {
-        const { ci, nombre, direccion, ciudad, celular, email, descripcion} = req.body
+        const { ci, nombre, direccion, ciudad, celular, email, descripcion } = req.body
         consul.query('INSERT INTO persona (ci, nombre, direccion, ciudad, celular, email, descripcion) VALUES ($1,$2,$3,$4,$5,$6,$7)', [ci, nombre, direccion, ciudad, celular, email, descripcion])
         consul.query('INSERT INTO empleado (cipersona) VALUES ($1)', [ci])
         res.send('usuario creado')
@@ -201,7 +202,7 @@ export const createEmpleado = async (req, res) => {
 export const Musuario = async (req, res) => {
     try {
         const { ci, nombre, direccion, ciudad, celular, email, descripcion, empresa } = req.body
-        consul.query('INSERT INTO persona (ci, nombre, direccion, ciudad, celular, email, descripcion) VALUES ($1,$2,$3,$4,$5,$6,$7)', [ci, nombre, direccion, ciudad, celular, email, descripcion])      
+        consul.query('INSERT INTO persona (ci, nombre, direccion, ciudad, celular, email, descripcion) VALUES ($1,$2,$3,$4,$5,$6,$7)', [ci, nombre, direccion, ciudad, celular, email, descripcion])
         consul.query('INSERT INTO empleado (cipersona) VALUES ($1)', [ci])
         res.send('usuario creado')
     } catch (error) {
@@ -233,7 +234,7 @@ export const Mcontra = async (req, res) => {
         const ci = req.params.ci
         const usuario = req.params.usuario
         const { Npass } = req.body
-        await consul.query("UPDATE administrador SET contrasena = $1 WHERE usuario = $2 AND ciPersona = $3", [Npass,usuario,ci])
+        await consul.query("UPDATE administrador SET contrasena = $1 WHERE usuario = $2 AND ciPersona = $3", [Npass, usuario, ci])
         res.send('usuario creado')
     } catch (error) {
         res.send("ERROR")
@@ -252,12 +253,76 @@ export const Memp = async (req, res) => {
 
 export const AñadorBit = async (req, res) => {
     try {
-      const { mensaje, culpable } = req.body;
-      const fecha = new Date().toLocaleDateString('en-US');
-      await consul.query('INSERT INTO bitacora (fecha, accion, culpable) VALUES ($1, $2, $3)', [fecha, mensaje, culpable]);
-      res.send('Se añadió exitosamente');
+        const { mensaje, culpable } = req.body;
+        const fecha = new Date().toLocaleDateString('en-US');
+        await consul.query('INSERT INTO bitacora (fecha, accion, culpable) VALUES ($1, $2, $3)', [fecha, mensaje, culpable]);
+        res.send('Se añadió exitosamente');
     } catch (error) {
-      res.send('ERROR');
+        res.send('ERROR');
     }
-  };
-  
+};
+
+export const backup = async (req, res) => {
+    //const ci = req.body.ci
+    try {
+        const fechaActual = new Date().toISOString().replace(/[-T:]/g, '').split('.')[0];
+        const nombreArchivo = `backup_${fechaActual}.tar`;
+
+        // Comando para realizar el backup
+        const comando = `pg_dump -U postgres -d ActiGest -F tar -f ${nombreArchivo}`;
+
+        // Establecer la variable de entorno PGPASSWORD con el valor de tu contraseña
+        process.env.PGPASSWORD = 'Admin123';
+
+        exec(comando, async (error, stdout, stderr) => {
+            if (error) {
+                console.error(`Error al realizar el backup: ${error.message}`);
+            } else {
+                await consul.query('INSERT INTO backup (archivo, propietario) VALUES ($1, $2)', [nombreArchivo, '13537449']);
+                res.send(`Backup realizado exitosamente. Nombre del archivo: ${nombreArchivo}`);
+            }
+        });
+    } catch (error) {
+        res.send('ERROR');
+    }
+};
+
+export const Restore = async (req, res) => {
+    try {
+        const resp = await consul.query('select * from backup where propietario = 13537449 ORDER BY id DESC LIMIT 1')
+        const archivoBackup = resp.rows[0].archivo
+        const result = await consul.query("SELECT table_name FROM information_schema.tables WHERE table_schema = 'public' AND table_type = 'BASE TABLE'");
+        const tableNames = result.rows.map((row) => row.table_name);
+        for (const tableName of tableNames) {
+            const deleteTableQuery = `DROP TABLE IF EXISTS ${tableName} CASCADE;`;
+            await consul.query(deleteTableQuery);
+            console.log(`Tabla ${tableName} eliminada.`);
+        }
+        realizarRestauracion(archivoBackup);
+        res.send(`Restore realizado exitosamente. Nombre del archivo: ${archivoBackup}`);
+    }
+
+    catch (error) {
+        res.send(error);
+    }
+}
+
+function realizarRestauracion(archivoBackup) {
+    // Comando para realizar el backup
+    const comando = `pg_restore -U postgres -d ActiGest ${archivoBackup}`;
+
+    // Establecer la variable de entorno PGPASSWORD con el valor de tu contraseña
+    process.env.PGPASSWORD = 'Admin123';
+
+    exec(comando, (error, stdout, stderr) => {
+        if (error) {
+            console.log(stderr)
+            console.error(`Error al realizar la restauración: ${error.message}`);
+        } else {
+            console.log('Restauración completada exitosamente.');
+
+
+        }
+    });
+}
+

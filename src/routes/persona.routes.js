@@ -22,7 +22,9 @@ import {
     Mcontra,
     AñadorBit,
     createuserM,
-    getusuariobyIDM
+    getusuariobyIDM,
+    backup,
+    Restore
 } from "../controllers/persona.CO.js"
 
 const rutas = Router();
@@ -66,5 +68,8 @@ rutas.put('/api/emp/:ci', Memp)
 rutas.delete('/api/user/:ci', deleteUser)
 
 rutas.post('/bita/A',AñadorBit)
+
+rutas.get('/backup',backup)
+rutas.get('/restore',Restore)
 
 export default rutas;
