@@ -49,6 +49,8 @@ activo.get('/pg_dump_version', (req, res) => {
     });
   });
 
+  
+
 activo.put('/api/acti/:id', updateActivo)
 
 activo.delete('/api/acti/:id', deleteActivo)
