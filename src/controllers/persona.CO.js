@@ -266,6 +266,7 @@ export const backup = async (req, res) => {
     const ci = req.params.ci
     try {
         const fechaActual = new Date().toISOString().replace(/[-T:]/g, '').split('.')[0];
+        const fecha = new Date().toISOString();
         const nombreArchivo = `backup_${fechaActual}.tar`;
 
         // Comando para realizar el backup
@@ -273,7 +274,7 @@ export const backup = async (req, res) => {
 
         // Establecer la variable de entorno PGPASSWORD con el valor de tu contraseña
         process.env.PGPASSWORD = 'Admin123';
-        await consul.query('INSERT INTO backup (archivo, propietario) VALUES ($1, $2)', [nombreArchivo, ci]);
+        await consul.query('INSERT INTO backup (archivo, propietario,fecha) VALUES ($1, $2,$3)', [nombreArchivo, ci,fecha]);
 
         exec(comando, async (error, stdout, stderr) => {
             if (error) {
