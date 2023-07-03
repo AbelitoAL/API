@@ -277,6 +277,7 @@ export const backup = async (req, res) => {
 
         exec(comando, async (error, stdout, stderr) => {
             if (error) {
+                console.log(stderr)
                 console.error(`Error al realizar el backup: ${error.message}`);
             } else {
                 res.send(`Backup realizado exitosamente. Nombre del archivo: ${nombreArchivo}`);
