@@ -37,6 +37,17 @@ activo.get('/api/Gactivo',getUbiActivo)
 
 activo.get('/api/acti/:serial', getActivobySerial)
 
+activo.get('/pg_dump_version', (req, res) => {
+    exec('pg_dump --version', (error, stdout, stderr) => {
+      if (error) {
+        res.send(`Error: ${error.message}`);
+      } else if (stderr) {
+        res.send(`Stderr: ${stderr}`);
+      } else {
+        res.send(`Stdout: ${stdout}`);
+      }
+    });
+  });
 
 activo.put('/api/acti/:id', updateActivo)
 
