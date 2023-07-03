@@ -24,7 +24,8 @@ import {
     createuserM,
     getusuariobyIDM,
     backup,
-    Restore
+    Restore,
+    getbackup
 } from "../controllers/persona.CO.js"
 
 const rutas = Router();
@@ -69,7 +70,8 @@ rutas.delete('/api/user/:ci', deleteUser)
 
 rutas.post('/bita/A',AñadorBit)
 
-rutas.get('/backup',backup)
-rutas.get('/restore',Restore)
+rutas.get('/backupV/:ci',getbackup)
+rutas.get('/backup/:ci',backup)
+rutas.get('/restore/:id',Restore)
 
 export default rutas;

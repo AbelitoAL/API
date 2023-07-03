@@ -263,7 +263,7 @@ export const AñadorBit = async (req, res) => {
 };
 
 export const backup = async (req, res) => {
-    //const ci = req.body.ci
+    const ci = req.params.ci
     try {
         const fechaActual = new Date().toISOString().replace(/[-T:]/g, '').split('.')[0];
         const nombreArchivo = `backup_${fechaActual}.tar`;
@@ -273,12 +273,12 @@ export const backup = async (req, res) => {
 
         // Establecer la variable de entorno PGPASSWORD con el valor de tu contraseña
         process.env.PGPASSWORD = 'Admin123';
+        await consul.query('INSERT INTO backup (archivo, propietario) VALUES ($1, $2)', [nombreArchivo, ci]);
 
         exec(comando, async (error, stdout, stderr) => {
             if (error) {
                 console.error(`Error al realizar el backup: ${error.message}`);
             } else {
-                await consul.query('INSERT INTO backup (archivo, propietario) VALUES ($1, $2)', [nombreArchivo, '13537449']);
                 res.send(`Backup realizado exitosamente. Nombre del archivo: ${nombreArchivo}`);
             }
         });
@@ -289,14 +289,15 @@ export const backup = async (req, res) => {
 
 export const Restore = async (req, res) => {
     try {
-        const resp = await consul.query('select * from backup where propietario = 13537449 ORDER BY id DESC LIMIT 1')
+        const id = req.params.id
+        const resp = await consul.query('select * from backup where id = $1 ',[id])
         const archivoBackup = resp.rows[0].archivo
         const result = await consul.query("SELECT table_name FROM information_schema.tables WHERE table_schema = 'public' AND table_type = 'BASE TABLE'");
         const tableNames = result.rows.map((row) => row.table_name);
         for (const tableName of tableNames) {
             const deleteTableQuery = `DROP TABLE IF EXISTS ${tableName} CASCADE;`;
             await consul.query(deleteTableQuery);
-            console.log(`Tabla ${tableName} eliminada.`);
+           console.log(`Tabla ${tableName} eliminada.`);
         }
         realizarRestauracion(archivoBackup);
         res.send(`Restore realizado exitosamente. Nombre del archivo: ${archivoBackup}`);
@@ -316,7 +317,6 @@ function realizarRestauracion(archivoBackup) {
 
     exec(comando, (error, stdout, stderr) => {
         if (error) {
-            console.log(stderr)
             console.error(`Error al realizar la restauración: ${error.message}`);
         } else {
             console.log('Restauración completada exitosamente.');
@@ -325,4 +325,14 @@ function realizarRestauracion(archivoBackup) {
         }
     });
 }
+
+export const getbackup = async (req, res) => {
+    try {
+        const resp = await consul.query('SELECT * FROM backup where ci = $1', [req.params.ci])
+        res.status(200).json(resp.rows)
+    } catch (error) {
+        res.send("ERROR")
+    }
+}
+
 
