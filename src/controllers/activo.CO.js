@@ -77,6 +77,7 @@ export const getUbiActivo = async (req, res) => {
 export const getGarActivo = async (req, res) => {
     try {
         const resp = await consul.query('SELECT * FROM garantia where activo_id = $1',[req.params.id])
+        console.log(resp.rows)
         res.status(200).json(resp.rows)
     } catch (error) {
         res.send("ERROR")
