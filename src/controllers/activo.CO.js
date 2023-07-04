@@ -137,10 +137,10 @@ export const createReserva = async(req, res)=>{
 
 export const createGarantia = async(req, res)=>{
     try {
-        const { id, caducidad, descripcion } = req.body
+        const { id, caducidad, descripcion, adquirido } = req.body
         console.log(req.body)
-        await consul.query('INSERT INTO reserva (idActivoFijo, ciPersona, fecha, descripcion) VALUES ($1,$2,$3,$4)', [idActivoFijo, ciPersona, fecha, descripcion])
-        res.send('activo reservado')
+        await consul.query('INSERT INTO garantia (activo_id, descripcion, caducidad, adquirido) VALUES ($1,$2,$3,$4)', [id, descripcion, caducidad,adquirido])
+        res.send('garantia creada')
     } catch (error) {
         res.send("ERROR")
     }
