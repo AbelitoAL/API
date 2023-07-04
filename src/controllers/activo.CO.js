@@ -76,7 +76,7 @@ export const getUbiActivo = async (req, res) => {
 
 export const getGarActivo = async (req, res) => {
     try {
-        const resp = await consul.query('SELECT * FROM garantia where garantia.activo_id = $1',[req.params.id])
+        const resp = await consul.query('SELECT * FROM garantia where activo_id = $1',[req.params.id])
         res.status(200).json(resp.rows)
     } catch (error) {
         res.send("ERROR")
@@ -138,7 +138,6 @@ export const createReserva = async(req, res)=>{
 export const createGarantia = async(req, res)=>{
     try {
         const { id, caducidad, descripcion, adquirido } = req.body
-        console.log(req.body)
         await consul.query('INSERT INTO garantia (activo_id, descripcion, caducidad, adquirido) VALUES ($1,$2,$3,$4)', [id, descripcion, caducidad,adquirido])
         res.send('garantia creada')
     } catch (error) {
