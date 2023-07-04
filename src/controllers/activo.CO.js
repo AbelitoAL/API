@@ -73,8 +73,7 @@ export const getActivosF = async (req, res) => {
 
 export const getUbiActivo = async (req, res) => {
     try {
-        const resp = await consul.query('SELECT * FROM activoFijo,ubicacion,localiza WHERE idActivo=activoFijo.id and idUbicacion=ubicacion.id')
-        console.log(resp.rows)
+        const resp = await consul.query('SELECT ubicacion.* FROM activoFijo,ubicacion,localiza WHERE idActivo=activoFijo.id and idUbicacion=ubicacion.id and idActivo =$1',[req.params.id])
         res.status(200).json(resp.rows)
     } catch (error) {
         res.send("ERROR")

@@ -33,7 +33,7 @@ activo.get('/api/acti/:id', getActivobyID)
 
 activo.get('/api/Gacti/:id',getGarActivo)
 
-activo.get('/api/Gactivo',getUbiActivo)
+activo.get('/api/Gactivo/:id',getUbiActivo)
 
 activo.get('/api/acti/:serial', getActivobySerial)
 
