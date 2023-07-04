@@ -35,6 +35,15 @@ export const getcantidadM = async (req, res) => {
     }
 }
 
+export const deletegarantia = async (req,res) =>{
+    try {
+        await consul.query('DELETE FROM garantia WHERE id = $1', [req.params.id]);
+        res.send(`Activo ${req.params.id} Eliminado`)
+    } catch (error) {
+        res.send("ERROR")
+    }
+}
+
 export const getImagen = async (req, res) => {
     try {
         const resp = await consul.query('SELECT * FROM activoFijo where id = $1',[req.params.id]) 
@@ -77,7 +86,6 @@ export const getUbiActivo = async (req, res) => {
 export const getGarActivo = async (req, res) => {
     try {
         const resp = await consul.query('SELECT * FROM garantia where activo_id = $1',[req.params.id])
-        console.log(resp.rows)
         res.status(200).json(resp.rows)
     } catch (error) {
         res.send("ERROR")

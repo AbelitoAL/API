@@ -3,7 +3,7 @@ import {dirname, join} from 'path';
 import {fileURLToPath} from 'url';
 import multer from 'multer'
 import { exec } from 'child_process'
-import {createActivo,createGarantia,createReserva,deleteActivo,getActivobyID,getActivobySerial,getActivos,getActivosF,getGarActivo,getImagen,getReservas,getUbiActivo, getcantidadM, updateActivo, updateReserva}from "../controllers/activo.CO.js"
+import {createActivo,createGarantia,createReserva,deleteActivo,deletegarantia,getActivobyID,getActivobySerial,getActivos,getActivosF,getGarActivo,getImagen,getReservas,getUbiActivo, getcantidadM, updateActivo, updateReserva}from "../controllers/activo.CO.js"
 
 const activo = Router();
 
@@ -58,6 +58,8 @@ activo.delete('/api/acti/:id', deleteActivo)
 activo.post('/api/acti/res', createReserva)
 
 activo.post('/api/acti/gar', createGarantia)
+
+activo.delete('/api/acti/gar/:id', deletegarantia)
 
 activo.get('/api/res', getReservas)
 
