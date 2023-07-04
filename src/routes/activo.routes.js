@@ -3,7 +3,7 @@ import {dirname, join} from 'path';
 import {fileURLToPath} from 'url';
 import multer from 'multer'
 import { exec } from 'child_process'
-import {createActivo,createReserva,deleteActivo,getActivobyID,getActivobySerial,getActivos,getActivosF,getGarActivo,getImagen,getReservas,getUbiActivo, updateActivo, updateReserva}from "../controllers/activo.CO.js"
+import {createActivo,createReserva,deleteActivo,getActivobyID,getActivobySerial,createActivom,getActivos,getActivosF,getGarActivo,getImagen,getReservas,getUbiActivo, updateActivo, updateReserva}from "../controllers/activo.CO.js"
 
 const activo = Router();
 
@@ -22,6 +22,9 @@ export const storage = multer.diskStorage({
 const upload = multer({storage})
 
 activo.post('/api/acti',upload.single('img'), createActivo)
+
+activo.post('/api/actim', createActivom)
+
 
 activo.get('/api/acti', getActivos)
 

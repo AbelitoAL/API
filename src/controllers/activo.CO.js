@@ -13,6 +13,15 @@ export const createActivo = async (req, res) => {
         res.send("ERROR")
     }
 }
+export const createActivom = async (req, res) => {
+    try {
+        const { id,descripcion, diaCompra, costo, lugarCompra, marca, modelo, serial} = req.body
+        consul.query('INSERT INTO activoFijo (id,descripcion, diaCompra, costo, lugarCompra, marca, modelo, serial) VALUES ($1,$2,$3,$4,$5,$6,$7,$8)', [id,descripcion, diaCompra, costo, lugarCompra, marca, modelo, serial])
+        res.send('activo registrado')
+    } catch (error) {
+        res.send("ERROR CREATE")
+    }
+}
 export const getActivos = async (req, res) => {
     try {
         const resp = await consul.query('SELECT * FROM activoFijo')
