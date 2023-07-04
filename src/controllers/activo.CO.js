@@ -80,7 +80,14 @@ export const getUbiActivo = async (req, res) => {
     }
 }
 
-
+export const getMantenimiento = async (req, res) => {
+    try {
+        const resp = await consul.query('SELECT * FROM mantenimiento WHERE idaf = $1',[req.params.id])
+        res.status(200).json(resp.rows)
+    } catch (error) {
+        res.send("ERROR")
+    }
+}
 
 export const getGarActivo = async (req, res) => {
     try {
