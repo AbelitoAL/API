@@ -26,6 +26,15 @@ export const getActivos = async (req, res) => {
     }
 }
 
+export const getcantidadM = async (req, res) => {
+    try {
+        const resp = await consul.query('SELECT COUNT(*) AS cantidad_resultados FROM activoFijo WHERE id IN ( SELECT idaf  FROM mantenimiento WHERE idestado = ( SELECT id FROM estado WHERE id = 1 ))')
+        res.status(200).json(resp.rows[0])
+    } catch (error) {
+        res.send("ERROR")
+    }
+}
+
 export const getImagen = async (req, res) => {
     try {
         const resp = await consul.query('SELECT * FROM activoFijo where id = $1',[req.params.id]) 
