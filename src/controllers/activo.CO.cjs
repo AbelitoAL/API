@@ -32,6 +32,7 @@ export const createActivo = async (req, res) => {
         res.send("ERROR")
     }
 }
+//as
 export const createActivom = async (req, res) => {
     try {
         const { id, descripcion, diaCompra, costo, lugarCompra, marca, modelo, serial } = req.body
