@@ -2,11 +2,11 @@ import { consul } from "../db.js"
 import { dirname, join } from 'path';
 import { fileURLToPath } from 'url';
 import fs from 'fs';
-
-const oneSignal = require('onesignal-node');
+import pkg from 'onesignal-node';
+const { oneSignal } = pkg;
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
-const oneSignalClient = new oneSignal.Client({
+const oneSignalClient = new pkg.Client({
     app: { appAuthKey: 'NmM2ZDJmZGEtZmNlMC00NTY0LWE1NWEtMWU4NzA5OTFhZjY4', appId: '97009778-a5ce-4994-bf86-bd499137d95f' }
 });
 
