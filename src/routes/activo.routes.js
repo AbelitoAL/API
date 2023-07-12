@@ -1,11 +1,30 @@
-import { Router } from "express";
-import {dirname, join} from 'path';
-import {fileURLToPath} from 'url';
-import multer from 'multer'
-import { exec } from 'child_process'
-import {createActivo,createGarantia,createReserva,deleteActivo,deletegarantia,getActivobyID,getActivobySerial,getActivos,getActivosF,getGarActivo,getImagen,getMantenimiento,getReservas,getUbiActivo, getcantidadM, updateActivo, updateReserva}from "../controllers/activo.CO.js"
+const { Router } = require("express");
+const { dirname, join } = require('path');
+const { fileURLToPath } = require('url');
+const multer = require('multer');
+const { exec } = require('child_process');
+const {
+  createActivo,
+  createGarantia,
+  createReserva,
+  deleteActivo,
+  deletegarantia,
+  getActivobyID,
+  getActivobySerial,
+  getActivos,
+  getActivosF,
+  getGarActivo,
+  getImagen,
+  getMantenimiento,
+  getReservas,
+  getUbiActivo,
+  getcantidadM,
+  updateActivo,
+  updateReserva
+} = require("../controllers/activo.CO.cjs");
 
 const activo = Router();
+
 
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -72,4 +91,5 @@ activo.get('/api/actiCM',getcantidadM)
 
 activo.put('/api/res/:id', updateReserva)
 
-export default activo;
+// export default activo;
+module.exports = activo;
