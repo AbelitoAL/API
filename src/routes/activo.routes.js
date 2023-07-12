@@ -3,7 +3,7 @@ import {dirname, join} from 'path';
 import {fileURLToPath} from 'url';
 import multer from 'multer'
 import { exec } from 'child_process'
-import {createActivo,createReserva,deleteActivo,getActivobyID,getActivobySerial,createActivom,getActivos,getActivosF,getGarActivo,getImagen,getReservas,getUbiActivo, updateActivo, updateReserva}from "../controllers/activo.CO.js"
+import {createActivo,createGarantia,createReserva,deleteActivo,deletegarantia,getActivobyID,getActivobySerial,getActivos,getActivosF,getGarActivo,getImagen,getMantenimiento,getReservas,getUbiActivo, getcantidadM, updateActivo, updateReserva}from "../controllers/activo.CO.js"
 
 const activo = Router();
 
@@ -36,7 +36,9 @@ activo.get('/api/acti/:id', getActivobyID)
 
 activo.get('/api/Gacti/:id',getGarActivo)
 
-activo.get('/api/Gactivo',getUbiActivo)
+activo.get('/api/Gactivo/:id',getUbiActivo)
+
+activo.get('/api/GM/:id',getMantenimiento)
 
 activo.get('/api/acti/:serial', getActivobySerial)
 
@@ -60,9 +62,13 @@ activo.delete('/api/acti/:id', deleteActivo)
 
 activo.post('/api/acti/res', createReserva)
 
-activo.post('/api/acti/gar', createReserva)
+activo.post('/api/acti/gar', createGarantia)
+
+activo.delete('/api/acti/gar/:id', deletegarantia)
 
 activo.get('/api/res', getReservas)
+
+activo.get('/api/actiCM',getcantidadM)
 
 activo.put('/api/res/:id', updateReserva)
 
