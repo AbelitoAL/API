@@ -1,7 +1,7 @@
 import {consul} from "../db.js"
+
 import pkg from 'onesignal-node';
 import { createRequire } from 'module';
-import pkg from 'onesignal-node';
 
 const require = createRequire(import.meta.url);
 
@@ -60,7 +60,7 @@ export const deleteMantenimiento = async (req,res) =>{
         await consul.query('INSERT INTO bitacora (fecha,accion,culpable) VALUES ($1,$2,$3)', [fecha.toLocaleDateString('en-US'), 'Se eliminó un mantenimiento', culpable ])
         const message = { 
             app_id: '97009778-a5ce-4994-bf86-bd499137d95f',
-            contents: { en: `Se eliminó un mantenimiento ID: ${req.body.id} ` },
+            contents: { en: `Se eliminó un mantenimiento ID: ${req.body.id} ${req.body.descripcion}` },
             included_segments: ['All'] // Enviar a todos los segmentos (todos los usuarios suscritos)
           };
           sendNotification(message);
