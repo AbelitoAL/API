@@ -3,7 +3,6 @@ import { dirname, join } from 'path';
 import { fileURLToPath } from 'url';
 import fs from 'fs';
 import pkg from 'onesignal-node';
-const { oneSignal } = pkg;
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
 const oneSignalClient = new pkg.Client({
@@ -18,7 +17,7 @@ export const createActivo = async (req, res) => {
         } else {
             consul.query('INSERT INTO activoFijo (id,descripcion, diaCompra, costo, lugarCompra, marca, modelo, serial, foto) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9)', [id, descripcion, diaCompra, costo, lugarCompra, marca, modelo, serial, req.file.filename])
         }
-        const notification = new oneSignal.Notification({
+        const notification = new pkg.Notification({
             contents: { en: 'Se ha creado un nuevo activo fijo: ${req.body.descripcion}' },
             included_segments: ['All'] // Enviar a todos los segmentos (todos los usuarios suscritos)
         });
