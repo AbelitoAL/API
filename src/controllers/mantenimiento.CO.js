@@ -21,8 +21,6 @@ export const createMantenimiento = async (req, res) => {
     try {
         const { idaf,titulo, descripcion, fechaInicio, responsable,costo, idestado} = req.body
         consul.query('INSERT INTO mantenimiento (idaf,titulo, descripcion, fechaInicio, responsable,costo, idestado) VALUES ($1,$2,$3,$4,$5,$6,$7)', [idaf,titulo, descripcion, fechaInicio, responsable,costo, idestado])
-        const fecha = new Date()
-        await consul.query('INSERT INTO bitacora (fecha,accion,culpable) VALUES ($1,$2,$3)', [fecha.toLocaleDateString('en-US'), 'Se creó un nuevo mantenimiento', culpable ])
         const message = { 
             app_id: '97009778-a5ce-4994-bf86-bd499137d95f',
             contents: { en: `Se ha creado un mantenimiento para el activo fijo: ${req.body.idaf} ${req.body.descripcion}` },
@@ -30,6 +28,10 @@ export const createMantenimiento = async (req, res) => {
           };
         sendNotification(message);
         
+        const fecha = new Date()
+        await consul.query('INSERT INTO bitacora (fecha,accion,culpable) VALUES ($1,$2,$3)', [fecha.toLocaleDateString('en-US'), 'Se creó un nuevo mantenimiento', culpable ])
+        
+
         res.send('mantenimiento creado')
     } catch (error) {
         res.send("ERROR CREATE MANTENIMIENTO")
@@ -40,14 +42,15 @@ export const updateMantenimiento = async (req, res) => {
     try {
       const { idaf,titulo, descripcion, fechaInicio, responsable,costo, idestado } = req.body;
       await consul.query('UPDATE mantenimiento SET idaf=$1, titulo=$2, descripcion=$3, fechaInicio=$4, responsable=$5, costo=$6, idestado=$7 WHERE id = $8', [idaf,titulo, descripcion, fechaInicio, responsable,costo, idestado, req.params.id]);
-      const fecha = new Date()
-      await consul.query('INSERT INTO bitacora (fecha,accion,culpable) VALUES ($1,$2,$3)', [fecha.toLocaleDateString('en-US'), 'Se actualizó un mantenimiento', culpable ])
       const message = { 
         app_id: '97009778-a5ce-4994-bf86-bd499137d95f',
         contents: { en: `Se actualizó un mantenimiento para el activo fijo: ${req.body.idaf} ${req.body.descripcion}` },
         included_segments: ['All'] // Enviar a todos los segmentos (todos los usuarios suscritos)
       };
       sendNotification(message);
+      const fecha = new Date()
+      await consul.query('INSERT INTO bitacora (fecha,accion,culpable) VALUES ($1,$2,$3)', [fecha.toLocaleDateString('en-US'), 'Se actualizó un mantenimiento', culpable ])
+      
       res.send(`mantenimiento ${req.params.id} actualizado`);
     } catch (error) {
       res.send("ERROR UPDATE MANTENIMIENTO");
@@ -57,14 +60,15 @@ export const updateMantenimiento = async (req, res) => {
 export const deleteMantenimiento = async (req,res) =>{
     try {
         const resp = await consul.query('DELETE FROM mantenimiento WHERE id = $1',[req.params.id])
-        const fecha = new Date()
-        await consul.query('INSERT INTO bitacora (fecha,accion,culpable) VALUES ($1,$2,$3)', [fecha.toLocaleDateString('en-US'), 'Se eliminó un mantenimiento', culpable ])
         const message = { 
             app_id: '97009778-a5ce-4994-bf86-bd499137d95f',
             contents: { en: `Se eliminó un mantenimiento ID: ${req.body.id} ${req.body.descripcion}` },
             included_segments: ['All'] // Enviar a todos los segmentos (todos los usuarios suscritos)
           };
           sendNotification(message);
+        const fecha = new Date()
+        await consul.query('INSERT INTO bitacora (fecha,accion,culpable) VALUES ($1,$2,$3)', [fecha.toLocaleDateString('en-US'), 'Se eliminó un mantenimiento', culpable ])
+        
         res.send(`mantenimiento ${req.params.id} Eliminado`)
     } catch (error) {
         res.send("ERROR DELETE MANTENIMIENTO")
