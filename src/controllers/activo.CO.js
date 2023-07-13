@@ -4,6 +4,9 @@ import { fileURLToPath } from 'url';
 import fs from 'fs';
 import pkg from 'onesignal-node';
 const __dirname = dirname(fileURLToPath(import.meta.url));
+import { createRequire } from 'module';
+
+const require = createRequire(import.meta.url);
 
 const oneSignalClient = new pkg.Client({
     app: { appAuthKey: 'NmM2ZDJmZGEtZmNlMC00NTY0LWE1NWEtMWU4NzA5OTFhZjY4', appId: '97009778-a5ce-4994-bf86-bd499137d95f' }
@@ -17,12 +20,12 @@ export const createActivo = async (req, res) => {
         } else {
             consul.query('INSERT INTO activoFijo (id,descripcion, diaCompra, costo, lugarCompra, marca, modelo, serial, foto) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9)', [id, descripcion, diaCompra, costo, lugarCompra, marca, modelo, serial, req.file.filename])
         }
-        const notification = pkg.createNotification({
-            contents: { en: 'Se ha creado un nuevo activo fijo: ${req.body.descripcion}' },
+        const message = { 
+            app_id: 'YourAppId',
+            contents: { en: `Se ha creado un nuevo activo fijo: ${req.body.descripcion}` },
             included_segments: ['All'] // Enviar a todos los segmentos (todos los usuarios suscritos)
-        });
-        const response = await oneSignalClient.sendNotification(notification);
-        console.log(response);
+          };
+          sendNotification(message);
 
         res.send('activo registrado')
     } catch (error) {
@@ -31,6 +34,36 @@ export const createActivo = async (req, res) => {
         res.send("ERROR")
     }
 }
+const sendNotification = (data) => {
+    const headers = {
+        "Content-Type": "application/json; charset=utf-8",
+        "Authorization": "Basic YourAuthorizationKey"
+    };
+
+    const options = {
+        host: "onesignal.com",
+        port: 443,
+        path: "/api/v1/notifications",
+        method: "POST",
+        headers: headers
+    };
+
+    const https = require('https');
+    const req = https.request(options, function (res) {
+        res.on('data', function (data) {
+            console.log("Response:");
+            console.log(JSON.parse(data));
+        });
+    });
+
+    req.on('error', function (e) {
+        console.log("ERROR:");
+        console.log(e);
+    });
+
+    req.write(JSON.stringify(data));
+    req.end();
+};
 //as
 export const createActivom = async (req, res) => {
     try {
