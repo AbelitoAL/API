@@ -21,7 +21,7 @@ export const createActivo = async (req, res) => {
             consul.query('INSERT INTO activoFijo (id,descripcion, diaCompra, costo, lugarCompra, marca, modelo, serial, foto) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9)', [id, descripcion, diaCompra, costo, lugarCompra, marca, modelo, serial, req.file.filename])
         }
         const message = { 
-            app_id: 'YourAppId',
+            app_id: '97009778-a5ce-4994-bf86-bd499137d95f',
             contents: { en: `Se ha creado un nuevo activo fijo: ${req.body.descripcion}` },
             included_segments: ['All'] // Enviar a todos los segmentos (todos los usuarios suscritos)
           };
@@ -37,7 +37,7 @@ export const createActivo = async (req, res) => {
 const sendNotification = (data) => {
     const headers = {
         "Content-Type": "application/json; charset=utf-8",
-        "Authorization": "Basic YourAuthorizationKey"
+        "Authorization": "Basic NmM2ZDJmZGEtZmNlMC00NTY0LWE1NWEtMWU4NzA5OTFhZjY4"
     };
 
     const options = {
