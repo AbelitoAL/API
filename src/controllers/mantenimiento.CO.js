@@ -62,7 +62,7 @@ export const deleteMantenimiento = async (req,res) =>{
         const resp = await consul.query('DELETE FROM mantenimiento WHERE id = $1',[req.params.id])
         const message = { 
             app_id: '97009778-a5ce-4994-bf86-bd499137d95f',
-            contents: { en: `Se eliminó un mantenimiento ID: ${req.body.id} ${req.body.descripcion}` },
+            contents: { en: `Se eliminó un mantenimiento ID: ${req.params.id}` },
             included_segments: ['All'] // Enviar a todos los segmentos (todos los usuarios suscritos)
           };
           sendNotification(message);
