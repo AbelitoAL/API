@@ -28,7 +28,8 @@ export const createMantenimiento = async (req, res) => {
             contents: { en: `Se ha creado un mantenimiento para el activo fijo: ${req.body.idaf} ${req.body.descripcion}` },
             included_segments: ['All'] // Enviar a todos los segmentos (todos los usuarios suscritos)
           };
-          sendNotification(message);
+        sendNotification(message);
+        
         res.send('mantenimiento creado')
     } catch (error) {
         res.send("ERROR CREATE MANTENIMIENTO")

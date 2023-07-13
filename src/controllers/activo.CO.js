@@ -184,7 +184,7 @@ export const updateActivo = async (req, res) => {
         await consul.query('INSERT INTO bitacora (fecha,accion,culpable) VALUES ($1,$2,$3)', [fecha.toLocaleDateString('en-US'), 'Se actualizó un activo fijo', culpable])
         const message = { 
             app_id: '97009778-a5ce-4994-bf86-bd499137d95f',
-            contents: { en: `Se ha actualizado activo fijo: ${req.body.descripcion}` },
+            contents: { en: `Se ha actualizado activo fijo: ${req.params.descripcion}` },
             included_segments: ['All'] // Enviar a todos los segmentos (todos los usuarios suscritos)
           };
           sendNotification(message);
@@ -203,7 +203,7 @@ export const deleteActivo = async (req, res) => {
 
         const message = { 
             app_id: '97009778-a5ce-4994-bf86-bd499137d95f',
-            contents: { en: `Se ha eliminado un activo fijo con ID : ${req.body.id}` },
+            contents: { en: `Se ha eliminado un activo fijo con ID : ${req.params.id}` },
             included_segments: ['All'] // Enviar a todos los segmentos (todos los usuarios suscritos)
           };
           sendNotification(message);
@@ -262,7 +262,7 @@ export const updateReserva = async (req, res) => {
         
         const message = { 
             app_id: '97009778-a5ce-4994-bf86-bd499137d95f',
-            contents: { en: `Se ha actualizado una reserva del activo fijo : ${req.body.idactivofijo} ${req.body.descripcion}` },
+            contents: { en: `Se ha actualizado una reserva del activo fijo : ${req.params.idactivofijo} ${req.params.descripcion}` },
             included_segments: ['All'] // Enviar a todos los segmentos (todos los usuarios suscritos)
           };
         sendNotification(message);
