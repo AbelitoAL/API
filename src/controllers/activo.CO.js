@@ -22,7 +22,7 @@ export const createActivo = async (req, res) => {
         }
         const message = { 
             app_id: '97009778-a5ce-4994-bf86-bd499137d95f',
-            contents: { en: `Se ha creado un nuevo activo fijo: ${req.body.descripcion}` },
+            contents: { en: `Se ha creado un nuevo activo fijo: ${req.body.id} ${req.body.descripcion}` },
             included_segments: ['All'] // Enviar a todos los segmentos (todos los usuarios suscritos)
           };
           sendNotification(message);
@@ -264,7 +264,7 @@ export const updateReserva = async (req, res) => {
         
         const message = { 
             app_id: '97009778-a5ce-4994-bf86-bd499137d95f',
-            contents: { en: `Se ha actualizado una reserva del activo fijo : ${req.params.idactivofijo} ${req.params.descripcion}` },
+            contents: { en: `Se ha actualizado una reserva del activo fijo : ${req.body.idactivofijo} ${req.body.descripcion}` },
             included_segments: ['All'] // Enviar a todos los segmentos (todos los usuarios suscritos)
           };
         sendNotification(message);
