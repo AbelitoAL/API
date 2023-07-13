@@ -97,7 +97,7 @@ export const deletegarantia = async (req, res) => {
         await consul.query('DELETE FROM garantia WHERE id = $1', [req.params.id]);
         const message = { 
             app_id: '97009778-a5ce-4994-bf86-bd499137d95f',
-            contents: { en: `Se eliminó una reserva del activo fijo : ${req.params.id}` },
+            contents: { en: `Se eliminó una garantía para el activo fijo : ${req.params.id}` },
             included_segments: ['All'] // Enviar a todos los segmentos (todos los usuarios suscritos)
           };
         sendNotification(message);
