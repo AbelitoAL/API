@@ -182,7 +182,7 @@ export const updateActivo = async (req, res) => {
         await consul.query('UPDATE activofijo SET descripcion=$1, diaCompra=$2, costo=$3, lugarCompra=$4, marca=$5, modelo=$6, serial=$7, foto=$8 WHERE id = $9', [descripcion, diaCompra, costo, lugarCompra, marca, modelo, serial, foto, req.params.id]);
         const message = { 
             app_id: '97009778-a5ce-4994-bf86-bd499137d95f',
-            contents: { en: `Se ha actualizado activo fijo: ${req.params.descripcion}` },
+            contents: { en: `Se ha actualizado activo fijo: ${req.body.descripcion}` },
             included_segments: ['All'] // Enviar a todos los segmentos (todos los usuarios suscritos)
           };
           sendNotification(message);
