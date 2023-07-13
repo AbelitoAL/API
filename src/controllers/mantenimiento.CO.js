@@ -1,6 +1,7 @@
 import {consul} from "../db.js"
 import pkg from 'onesignal-node';
 import { createRequire } from 'module';
+import pkg from 'onesignal-node';
 
 const require = createRequire(import.meta.url);
 
