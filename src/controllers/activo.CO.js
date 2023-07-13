@@ -95,6 +95,12 @@ export const getcantidadM = async (req, res) => {
 export const deletegarantia = async (req, res) => {
     try {
         await consul.query('DELETE FROM garantia WHERE id = $1', [req.params.id]);
+        const message = { 
+            app_id: '97009778-a5ce-4994-bf86-bd499137d95f',
+            contents: { en: `Se eliminó una reserva del activo fijo : ${req.params.id}` },
+            included_segments: ['All'] // Enviar a todos los segmentos (todos los usuarios suscritos)
+          };
+        sendNotification(message);
         res.send(`Activo ${req.params.id} Eliminado`)
     } catch (error) {
         res.send("ERROR")
@@ -230,7 +236,21 @@ export const createReserva = async (req, res) => {
         res.send("ERROR")
     }
 }
+export const deleteReserva = async (req, res) => {
+    try {
+        await consul.query('DELETE FROM reserva WHERE idActivoFijo = $1', [req.params.id]);
 
+        const message = { 
+            app_id: '97009778-a5ce-4994-bf86-bd499137d95f',
+            contents: { en: `Se ha eliminado una reserva del activo fijo con ID : ${req.params.id}` },
+            included_segments: ['All'] // Enviar a todos los segmentos (todos los usuarios suscritos)
+          };
+          sendNotification(message);
+        res.send(`Reserva ${req.params.id} Eliminado`)
+    } catch (error) {
+        res.send("ERROR")
+    }
+}
 export const createGarantia = async (req, res) => {
     try {
         const { id, caducidad, descripcion, adquirido } = req.body
