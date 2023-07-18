@@ -3,7 +3,7 @@ import {consul} from "../db.js"
 // Controlador para obtener todos los ubicacions
 export const getUbicaciones = async (req, res) => {
     try {
-      const resp = await consul.query('SELECT * FROM ubicacion');
+      const resp = await consul.query('SELECT * FROM ubicacion ORDER BY id ASC');
       res.status(200).json(resp.rows);
     } catch (error) {
       res.send("ERROR");

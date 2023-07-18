@@ -76,7 +76,7 @@ export const createActivom = async (req, res) => {
 }
 export const getActivos = async (req, res) => {
     try {
-        const resp = await consul.query('SELECT * FROM activoFijo')
+        const resp = await consul.query('SELECT * FROM activoFijo ORDER BY id ASC')
         res.status(200).json(resp.rows)
     } catch (error) {
         res.send("ERROR")
@@ -85,7 +85,7 @@ export const getActivos = async (req, res) => {
 
 export const getcantidadM = async (req, res) => {
     try {
-        const resp = await consul.query('SELECT COUNT(*) AS cantidad_resultados FROM activoFijo WHERE id IN ( SELECT idaf  FROM mantenimiento WHERE idestado = ( SELECT id FROM estado WHERE id = 1 ))')
+        const resp = await consul.query('SELECT COUNT(*) AS cantidad_resultados FROM activoFijo WHERE id IN ( SELECT idaf  FROM mantenimiento WHERE idestado = ( SELECT id FROM estado WHERE id = 1 )) ORDER BY id ASC')
         res.status(200).json(resp.rows[0])
     } catch (error) {
         res.send("ERROR")
@@ -269,7 +269,7 @@ export const createGarantia = async (req, res) => {
 
 export const getReservas = async (req, res) => {
     try {
-        const resp = await consul.query('SELECT * FROM reserva')
+        const resp = await consul.query('SELECT * FROM reserva ORDER BY id ASC')
         console.log(resp);
         res.status(200).json(resp.rows)
     } catch (error) {

@@ -10,7 +10,7 @@ const oneSignalClient = new pkg.Client({
 });
 export const getMantenimientos = async (req, res) => {
     try {
-        const resp = await consul.query('SELECT * FROM mantenimiento')
+        const resp = await consul.query('SELECT * FROM mantenimiento ORDER BY id ASC')
         res.status(200).json(resp.rows)
     } catch (error) {
         res.send("ERROR GET MANTENIMIENTOS")
