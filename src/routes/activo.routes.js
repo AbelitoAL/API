@@ -3,7 +3,7 @@ import {dirname, join} from 'path';
 import {fileURLToPath} from 'url';
 import multer from 'multer'
 import { exec } from 'child_process'
-import {createActivo,createGarantia,deleteReserva,createReserva,deleteActivo,deletegarantia,getActivobyID,getActivobySerial,getActivos,getActivosF,getGarActivo,getImagen,getMantenimiento,getReservas,getUbiActivo, getcantidadM, updateActivo, updateReserva, getdeprebyID, AñadirDepre}from "../controllers/activo.CO.js"
+import {createActivo,createGarantia,deleteReserva,createReserva,deleteActivo,deletegarantia,getActivobyID,getActivobySerial,getActivos,getActivosF,getGarActivo,getImagen,getMantenimiento,getReservas,getUbiActivo, getcantidadM, updateActivo, updateReserva, getdeprebyID, AñadirDepre, AñadirReva}from "../controllers/activo.CO.js"
 
 
 const activo = Router();
@@ -38,6 +38,8 @@ activo.get('/api/acti/:id', getActivobyID)
 activo.get('/api/actiDep/:id', getdeprebyID)
 
 activo.post('/api/acti/depre', AñadirDepre)
+
+activo.post('/api/acti/rev', AñadirReva)
 
 activo.get('/api/Gacti/:id',getGarActivo)
 

@@ -93,6 +93,19 @@ export const AñadirDepre = async (req, res) => {
     }
 }
 
+
+
+export const AñadirReva = async (req, res) => {
+    try {
+        const { id,valor_ra } = req.body
+        const resp = await consul.query('UPDATE activofijo SET valor_ra = $1 WHERE id = $2', [valor_ra,id]);
+        const resp2 = await consul.query('UPDATE depreciacion SET costo_dep = $1 WHERE id = $2', [valor_ra,id]);
+        res.status(200).json(resp.rows[0])
+    } catch (error) {
+        res.send("ERROR")
+    }
+}
+
 export const getcantidadM = async (req, res) => {
     try {
         const resp = await consul.query('SELECT COUNT(*) AS cantidad_resultados FROM activoFijo WHERE id IN ( SELECT idaf  FROM mantenimiento WHERE idestado = ( SELECT id FROM estado WHERE id = 1 ))')
@@ -207,9 +220,9 @@ export const updateActivo = async (req, res) => {
         console.log(req.body)
         console.log(req.file)
         if (req.file == undefined) {
-             consul.query('UPDATE activofijo SET descripcion=$1, diaCompra=$2, costo=$3, lugarCompra=$4, marca=$5, modelo=$6, serial=$7, foto=$8 WHERE id = $9', [descripcion, diaCompra, costo, lugarCompra, marca, modelo, serial, "default.jpg", req.params.id]);
+             await consul.query('UPDATE activofijo SET descripcion=$1, diaCompra=$2, costo=$3, lugarCompra=$4, marca=$5, modelo=$6, serial=$7, foto=$8 WHERE id = $9', [descripcion, diaCompra, costo, lugarCompra, marca, modelo, serial, "default.jpg", req.params.id]);
         } else {
-             consul.query('UPDATE activofijo SET descripcion=$1, diaCompra=$2, costo=$3, lugarCompra=$4, marca=$5, modelo=$6, serial=$7, foto=$8 WHERE id = $9', [descripcion, diaCompra, costo, lugarCompra, marca, modelo, serial, req.file.filename, req.params.id]);
+             await consul.query('UPDATE activofijo SET descripcion=$1, diaCompra=$2, costo=$3, lugarCompra=$4, marca=$5, modelo=$6, serial=$7, foto=$8 WHERE id = $9', [descripcion, diaCompra, costo, lugarCompra, marca, modelo, serial, req.file.filename, req.params.id]);
         }
         const message = {
             app_id: '97009778-a5ce-4994-bf86-bd499137d95f',
