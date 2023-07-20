@@ -85,8 +85,8 @@ export const getActivos = async (req, res) => {
 
 export const AñadirDepre = async (req, res) => {
     try {
-        const { id, costo_dep, valor_res, vida_util } = req.body
-        const resp = await consul.query('INSERT INTO depreciacion (id_activo, costo_dep, valor_res, vida_util)VALUES ($1, $2, $3, $4);', [id, costo_dep, valor_res, vida_util])
+        const { id, costo_dep, valor_res, vida_util,fecha } = req.body
+        const resp = await consul.query('INSERT INTO depreciacion (id_activo, costo_dep, valor_res, vida_util,fecha)VALUES ($1, $2, $3, $4, $5);', [id, costo_dep, valor_res, vida_util,fecha])
         res.status(200).json(resp.rows[0])
     } catch (error) {
         res.send("ERROR")
