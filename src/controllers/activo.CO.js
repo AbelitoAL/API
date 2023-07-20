@@ -171,6 +171,15 @@ export const getGarActivo = async (req, res) => {
     }
 }
 
+export const getdeprebyID = async (req, res) => {
+    try {
+        const resp = await consul.query('SELECT * FROM depreciacion where id_activo = $1', [req.params.id])
+        res.status(200).json(resp.rows)
+    } catch (error) {
+        res.send("ERROR")
+    }
+}
+
 export const getActivobyID = async (req, res) => {
     try {
         const resp = await consul.query('SELECT * FROM activoFijo where id = $1', [req.params.id])

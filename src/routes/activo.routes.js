@@ -3,7 +3,7 @@ import {dirname, join} from 'path';
 import {fileURLToPath} from 'url';
 import multer from 'multer'
 import { exec } from 'child_process'
-import {createActivo,createGarantia,deleteReserva,createReserva,deleteActivo,deletegarantia,getActivobyID,getActivobySerial,getActivos,getActivosF,getGarActivo,getImagen,getMantenimiento,getReservas,getUbiActivo, getcantidadM, updateActivo, updateReserva}from "../controllers/activo.CO.js"
+import {createActivo,createGarantia,deleteReserva,createReserva,deleteActivo,deletegarantia,getActivobyID,getActivobySerial,getActivos,getActivosF,getGarActivo,getImagen,getMantenimiento,getReservas,getUbiActivo, getcantidadM, updateActivo, updateReserva, getdeprebyID, AñadirDepre}from "../controllers/activo.CO.js"
 
 
 const activo = Router();
@@ -35,6 +35,10 @@ activo.get('/api/acti/:Inicio/:Fin', getActivosF)
 
 activo.get('/api/acti/:id', getActivobyID)
 
+activo.get('/api/actiDep/:id', getdeprebyID)
+
+activo.post('/api/acti/depre', AñadirDepre)
+
 activo.get('/api/Gacti/:id',getGarActivo)
 
 activo.get('/api/Gactivo/:id',getUbiActivo)
@@ -42,7 +46,6 @@ activo.get('/api/Gactivo/:id',getUbiActivo)
 activo.get('/api/GM/:id',getMantenimiento)
 
 activo.get('/api/acti/:serial', getActivobySerial)
-
 activo.get('/pg_dump_version', (req, res) => {
     exec('pg_dump --version', (error, stdout, stderr) => {
       if (error) {
@@ -62,6 +65,7 @@ activo.put('/api/acti/:id', updateActivo)
 activo.delete('/api/acti/:id', deleteActivo)
 
 activo.post('/api/acti/res', createReserva)
+
 
 activo.delete('/api/res/:id', deleteReserva)
 
