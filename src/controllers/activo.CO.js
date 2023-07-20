@@ -98,9 +98,8 @@ export const AñadirDepre = async (req, res) => {
 export const AñadirReva = async (req, res) => {
     try {
         const { id,valor_ra,Cdepreciable } = req.body
-        console.log(req.body)
-        const resp = await consul.query('UPDATE activofijo SET valor_ra = $1 WHERE id = $2', [valor_ra,id]);
-        const resp2 = await consul.query('UPDATE depreciacion SET costo_dep = $1 WHERE id = $2', [Cdepreciable,id]);
+        const resp = await consul.query('UPDATE activofijo SET valor_ra = $1 WHERE id = $2', [Cdepreciable,id]);
+        const resp2 = await consul.query('UPDATE depreciacion SET costo_dep = $1 WHERE id_activo = $2', [Cdepreciable,id]);
         res.status(200).json(resp.rows[0])
     } catch (error) {
         res.send("ERROR")
