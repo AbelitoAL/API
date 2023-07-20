@@ -20,12 +20,12 @@ export const createActivo = async (req, res) => {
         } else {
             consul.query('INSERT INTO activoFijo (id,descripcion, diaCompra, costo, lugarCompra, marca, modelo, serial, foto) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9)', [id, descripcion, diaCompra, costo, lugarCompra, marca, modelo, serial, req.file.filename])
         }
-        const message = { 
+        const message = {
             app_id: '97009778-a5ce-4994-bf86-bd499137d95f',
             contents: { en: `Se ha creado un nuevo activo fijo: ${req.body.id} ${req.body.descripcion}` },
             included_segments: ['All'] // Enviar a todos los segmentos (todos los usuarios suscritos)
-          };
-          sendNotification(message);
+        };
+        sendNotification(message);
 
         res.send('activo registrado')
     } catch (error) {
@@ -83,6 +83,16 @@ export const getActivos = async (req, res) => {
     }
 }
 
+export const AñadirDepre = async (req, res) => {
+    try {
+        const { id, costo_dep, valor_res, vida_util } = req.body
+        const resp = await consul.query('INSERT INTO depreciacion (id_activo, costo_dep, valor_res, vida_util)VALUES ($1, $2, $3, $4);', [id, costo_dep, valor_res, vida_util])
+        res.status(200).json(resp.rows[0])
+    } catch (error) {
+        res.send("ERROR")
+    }
+}
+
 export const getcantidadM = async (req, res) => {
     try {
         const resp = await consul.query('SELECT COUNT(*) AS cantidad_resultados FROM activoFijo WHERE id IN ( SELECT idaf  FROM mantenimiento WHERE idestado = ( SELECT id FROM estado WHERE id = 1 ))')
@@ -95,11 +105,11 @@ export const getcantidadM = async (req, res) => {
 export const deletegarantia = async (req, res) => {
     try {
         await consul.query('DELETE FROM garantia WHERE id = $1', [req.params.id]);
-        const message = { 
+        const message = {
             app_id: '97009778-a5ce-4994-bf86-bd499137d95f',
             contents: { en: `Se eliminó una garantía para el activo fijo : ${req.params.id}` },
             included_segments: ['All'] // Enviar a todos los segmentos (todos los usuarios suscritos)
-          };
+        };
         sendNotification(message);
         res.send(`Activo ${req.params.id} Eliminado`)
     } catch (error) {
@@ -186,16 +196,16 @@ export const updateActivo = async (req, res) => {
     try {
         const { descripcion, diaCompra, costo, lugarCompra, marca, modelo, serial, foto } = req.body;
         await consul.query('UPDATE activofijo SET descripcion=$1, diaCompra=$2, costo=$3, lugarCompra=$4, marca=$5, modelo=$6, serial=$7, foto=$8 WHERE id = $9', [descripcion, diaCompra, costo, lugarCompra, marca, modelo, serial, foto, req.params.id]);
-        const message = { 
+        const message = {
             app_id: '97009778-a5ce-4994-bf86-bd499137d95f',
             contents: { en: `Se ha actualizado el activo fijo: ${req.params.id} ${req.body.descripcion}` },
             included_segments: ['All'] // Enviar a todos los segmentos (todos los usuarios suscritos)
-          };
-          sendNotification(message);
+        };
+        sendNotification(message);
         const fecha = new Date()
-        
+
         await consul.query('INSERT INTO bitacora (fecha,accion,culpable) VALUES ($1,$2,$3)', [fecha.toLocaleDateString('en-US'), 'Se actualizó un activo fijo', culpable])
-        
+
         res.send(`activo ${req.params.id} actualizado`);
     } catch (error) {
         res.send("ERROR");
@@ -209,12 +219,12 @@ export const deleteActivo = async (req, res) => {
 
         const resp = await consul.query('DELETE FROM activoFijo WHERE id = $1', [req.params.id])
 
-        const message = { 
+        const message = {
             app_id: '97009778-a5ce-4994-bf86-bd499137d95f',
             contents: { en: `Se ha eliminado un activo fijo con ID : ${req.params.id}` },
             included_segments: ['All'] // Enviar a todos los segmentos (todos los usuarios suscritos)
-          };
-          sendNotification(message);
+        };
+        sendNotification(message);
         res.send(`Activo ${req.params.id} Eliminado`)
     } catch (error) {
         res.send("ERROR")
@@ -225,11 +235,11 @@ export const createReserva = async (req, res) => {
         const { idActivoFijo, ciPersona, fecha, descripcion } = req.body
         console.log(req.body)
         await consul.query('INSERT INTO reserva (idActivoFijo, ciPersona, fecha, descripcion) VALUES ($1,$2,$3,$4)', [idActivoFijo, ciPersona, fecha, descripcion])
-        const message = { 
+        const message = {
             app_id: '97009778-a5ce-4994-bf86-bd499137d95f',
             contents: { en: `Se ha creado una reserva del activo fijo : ${req.body.idActivoFijo} ${req.body.descripcion}` },
             included_segments: ['All'] // Enviar a todos los segmentos (todos los usuarios suscritos)
-          };
+        };
         sendNotification(message);
         res.send('activo reservado')
     } catch (error) {
@@ -240,12 +250,12 @@ export const deleteReserva = async (req, res) => {
     try {
         await consul.query('DELETE FROM reserva WHERE idActivoFijo = $1', [req.params.id]);
 
-        const message = { 
+        const message = {
             app_id: '97009778-a5ce-4994-bf86-bd499137d95f',
             contents: { en: `Se ha eliminado una reserva del activo fijo con ID : ${req.params.id}` },
             included_segments: ['All'] // Enviar a todos los segmentos (todos los usuarios suscritos)
-          };
-          sendNotification(message);
+        };
+        sendNotification(message);
         res.send(`Reserva ${req.params.id} Eliminado`)
     } catch (error) {
         res.send("ERROR")
@@ -255,11 +265,11 @@ export const createGarantia = async (req, res) => {
     try {
         const { id, caducidad, descripcion, adquirido } = req.body
         await consul.query('INSERT INTO garantia (activo_id, descripcion, caducidad, adquirido) VALUES ($1,$2,$3,$4)', [id, descripcion, caducidad, adquirido])
-        const message = { 
+        const message = {
             app_id: '97009778-a5ce-4994-bf86-bd499137d95f',
             contents: { en: `Se ha creado una garantia del activo fijo : ${req.body.id} ${req.body.descripcion}` },
             included_segments: ['All'] // Enviar a todos los segmentos (todos los usuarios suscritos)
-          };
+        };
         sendNotification(message);
         res.send('garantia creada')
     } catch (error) {
@@ -281,12 +291,12 @@ export const updateReserva = async (req, res) => {
     try {
         const { idactivofijo, cipersona, fecha, descripcion } = req.body;
         await consul.query('UPDATE reserva SET idactivofijo=$1, cipersona=$2, fecha=$3, descripcion=$4 WHERE id = $5', [idactivofijo, cipersona, fecha, descripcion, req.params.id]);
-        
-        const message = { 
+
+        const message = {
             app_id: '97009778-a5ce-4994-bf86-bd499137d95f',
             contents: { en: `Se ha actualizado una reserva del activo fijo : ${req.body.idactivofijo} ${req.body.descripcion}` },
             included_segments: ['All'] // Enviar a todos los segmentos (todos los usuarios suscritos)
-          };
+        };
         sendNotification(message);
         res.send(`Reserva ${req.params.id} actualizado`);
     } catch (error) {
