@@ -180,8 +180,9 @@ export const createuserM = async (req, res) => {
 export const createuser = async (req, res) => {
     try {
         const { nombre, email, ci, UsuI, Npass } = req.body
+        const rol = 1
         await consul.query('INSERT INTO persona (ci, nombre, email) VALUES ($1,$2,$3)', [ci, nombre, email])
-        await consul.query('INSERT INTO administrador (cipersona,usuario,contrasena) VALUES ($1,$2,$3)', [ci, UsuI, Npass])
+        await consul.query('INSERT INTO administrador (cipersona,usuario,contrasena,rol_id) VALUES ($1,$2,$3,$4)', [ci, UsuI, Npass,rol])
         res.send('usuario creado')
     } catch (error) {
         res.send("ERROR")
@@ -223,6 +224,7 @@ export const MUser = async (req, res) => {
     try {
         const { nombre, usuario, direccion, ciudad, celular, email } = req.body
         await consul.query("UPDATE persona SET nombre = $1,direccion = $2,ciudad = $3,celular = $4,email = $5 WHERE ci = $6", [nombre, direccion, ciudad, celular, email, req.params.ci])
+        console.log(usuario)
         await consul.query('UPDATE administrador SET usuario = $1 WHERE cipersona = $2 )', [usuario, req.params.ci])
         res.send('usuario creado')
     } catch (error) {
