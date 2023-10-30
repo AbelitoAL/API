@@ -184,7 +184,7 @@ export const createuser = async (req, res) => {
         const rol = 1
         const intentos = 0
         await consul.query('INSERT INTO persona (ci, nombre, email) VALUES ($1,$2,$3)', [ci, nombre, email])
-        await consul.query('INSERT INTO administrador (cipersona,usuario,contrasena,rol_id) VALUES ($1,$2,$3,$4,$)', [ci, UsuI, Npass,rol])
+        await consul.query('INSERT INTO administrador (cipersona,usuario,contrasena,rol_id) VALUES ($1,$2,$3,$4)', [ci, UsuI, Npass,rol])
         res.send('usuario creado')
     } catch (error) {
         res.send("ERROR")
